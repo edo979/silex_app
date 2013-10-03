@@ -1,0 +1,26 @@
+{% extends 'layout.twig' %}
+
+{% block body %}
+    <form action="{{ path('admin_login_check') }}" method="POST" class="form row" role="form">
+        {% if error %}
+            <div class="alert alert-error">
+                {{ error }}
+            </div>
+        {% endif %}
+
+        <fieldset class="col-lg-4">
+            <legend>Login</legend>
+            <div class="form-group">
+                <label for="inputUsername">Username</label>
+                <input class="form-control" type="text" id="inputUsername" placeholder="Username" name="_username" value="{{ last_username }}" />
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="inputPassword">Password</label>
+                <input class="form-control" type="password" id="inputPassword" name="_password" placeholder="Password"/>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Loggin</button>
+            </div>
+        </fieldset>
+    </form>
+{% endblock %}
