@@ -1,6 +1,6 @@
 {% extends 'layout.twig' %}
 
-{% block body %}
+{% block main %}
     <form action="{{ path('admin_login_check') }}" method="POST" class="form row" role="form">
         {% if error %}
             <div class="alert alert-error">

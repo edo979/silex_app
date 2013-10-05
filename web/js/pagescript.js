@@ -6,4 +6,5 @@ $(function(){
   $("#about nav.navbar ul li a:contains('About')").first().parent().addClass('active');
   $("#example nav.navbar ul li a:contains('Example')").first().parent().addClass('active');
   $("#contact nav.navbar ul li a:contains('Contact')").first().parent().addClass('active');
+  $("#login nav.navbar ul li a:contains('Admin')").first().parent().addClass('active');
 });
