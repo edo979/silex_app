@@ -10,13 +10,40 @@ $app->get('/login', function(Request $request) use ($app) {
       ));
   });
 
-$app->get('/hello', function() {
-      return 'Hello!';
-  });
-
-$app->get('/', function() {
-      return "Welcome home";
-  });
+$app->get('/', function(Silex\Application $app) {
+      return $app['twig']->render('homepage.twig', array(
+          'pageId'  => 'home',
+          'title'   => 'Home'
+      ));
+  })->bind('homepage');
+  
+$app->get('/gallery', function(Silex\Application $app) {
+      return $app['twig']->render('gallery.twig', array(
+          'pageId'  => 'gallery',
+          'title'   => 'Gallery'
+      ));
+  })->bind('gallery');
+  
+$app->get('/about', function(Silex\Application $app) {
+      return $app['twig']->render('about.twig', array(
+          'pageId'  => 'about',
+          'title'   => 'About'
+      ));
+  })->bind('about');
+  
+  $app->get('/example', function(Silex\Application $app) {
+      return $app['twig']->render('example.twig', array(
+          'pageId'  => 'example',
+          'title'   => 'Example'
+      ));
+  })->bind('example');
+  
+  $app->get('/contact', function(Silex\Application $app) {
+      return $app['twig']->render('contact.twig', array(
+          'pageId'  => 'contact',
+          'title'   => 'Contact'
+      ));
+  })->bind('contact');
 
 $app->get('/admin/', function() {
       echo '<a href="/admin/logout">Logout</a>';
