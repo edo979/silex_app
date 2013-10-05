@@ -17,6 +17,9 @@
     <section class="container">
       <div class="content row">
         {% include '_header.twig' %}
+        {% if pageId == 'home' %}
+          {% include '_carousel.twig' %}
+        {% endif %}
         <section class="main col col-lg-8">
           {% block main %}
           {% endblock %}
