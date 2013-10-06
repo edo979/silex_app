@@ -1,6 +1,7 @@
 <?php
 
 $admin = $app['controllers_factory'];
+
 $admin->get('/dashboard', function (Silex\Application $app)
   {
     $pageId = 'dashboard';
