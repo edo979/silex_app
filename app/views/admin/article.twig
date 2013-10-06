@@ -1,0 +1,22 @@
+{% extends 'admin/layout.twig' %}
+
+{% block main %}
+  <form action="" method="post">
+    <div class="form-gruop">
+      <label for="title">Title</label>
+      <input type="text" name="title" class="form-control" id="title" value="{{ article.title|e }}">
+    </div>
+    <div class="form-gruop">
+      <label for="body">Body</label>
+      <textarea class="form-control" name="body" id="body">{{ article.body|e }}</textarea>
+    </div>
+    <button type="submit" class="btn btn-default">Submit</button>
+  </form>
+{% endblock %}
+
+
+{% block sidebar %}
+<h2>Main column</h2>
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi, quos, molestiae, perspiciatis fugiat facilis rem dicta eum minus fugit culpa nobis autem. Beatae minima nihil doloremque accusamus explicabo voluptas nemo?</p>
+{% endblock %}
+

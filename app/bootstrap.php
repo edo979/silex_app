@@ -8,6 +8,7 @@ use Silex\Provider\SecurityServiceProvider;
 use Silex\Provider\DoctrineServiceProvider;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler;
 use Silex\Provider\TwigServiceProvider;
+use SimpleModel\Article;
 
 $app = new Silex\Application();
 $app['debug'] = true;
@@ -30,6 +31,11 @@ $app->register(new DoctrineServiceProvider(), array(
         'charset'  => 'utf8'
     )
 ));
+
+// Models
+$app['model.article'] = $app->share(function($app){
+  return new Article($app['db']);
+});
 
 // Sessions
 $app->register(new SessionServiceProvider());

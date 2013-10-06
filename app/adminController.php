@@ -1,5 +1,7 @@
 <?php
 
+use Symfony\Component\HttpFoundation\Request;
+
 $admin = $app['controllers_factory'];
 
 $admin->get('/dashboard', function (Silex\Application $app)
@@ -15,9 +17,8 @@ $admin->get('/articles', function (Silex\Application $app)
   {
     $pageId = 'articles';
     $conn = $app['db'];
-
-    $statement = $conn->executeQuery('SELECT * FROM articles');
-    $articles = $statement->fetchAll();
+    
+    $articles = $app['model.article']->get();
 
     return $app['twig']->render('admin/articles.twig', array(
           'pageId' => $pageId,
@@ -29,10 +30,37 @@ $admin->get('/articles', function (Silex\Application $app)
   $admin->get('/article/{id}', function (Silex\Application $app, $id)
   {
     $pageId = 'article';
-    return $app['twig']->render('admin/dashboard.twig', array(
+    $conn = $app['db'];
+    
+    $article = $app['model.article']->get($id);
+    
+    return $app['twig']->render('admin/article.twig', array(
           'pageId' => $pageId,
-          'title'  => ucfirst($pageId)
+          'title'  => ucfirst($pageId),
+          'article'=> $article
     ));
   })->bind('article');
+  
+  $admin->post('/article/{id}', function (Silex\Application $app, Request $request, $id)
+  {
+    $pageId = 'article';
+    $conn = $app['db'];
+    $data = array();
+    
+    $data['title'] = $request->get('title'); 
+    $data['body'] = $request->get('body'); 
+    
+    $article = $app['model.article']->save($data, $id);
+    
+    if($article)
+    {
+      // Redirect
+      return $app->redirect($app['url_generator']->generate('articles'));
+    }
+    else
+    {
+      // Show errors
+    }
+  });
 
 return $admin;

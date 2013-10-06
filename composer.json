@@ -5,5 +5,8 @@
         , "symfony/twig-bridge": "~2.3"
         , "symfony/security": "~2.3"
         , "doctrine/dbal": "2.2.*"
+    },
+    "autoload": {
+        "psr-0": {"SimpleModel": "app/"}
     }
 }
