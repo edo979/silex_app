@@ -7,17 +7,18 @@
       <tr>
         <th>#</th>
         <th>title</th>
-        <th>Edit</th>
-        <th>Delete</th>
+        <th>Edit/Delete</th>
       </tr>
     </thead>
     <tbody>
       {% for article in articles %}
         <tr>
           <td>{{loop.index}}</td>
-          <td><a href="/admin/article/{{article.id|e}}">{{article.title|e}}</a></td>
-          <td>Edit</td>
-          <td>Delete</td>
+          <td>{{article.title|e}}</td>
+          <td>
+            <a href="/admin/article/{{article.id|e}}"><span class="glyphicon glyphicon-pencil"></span>&nbsp &nbsp|&nbsp &nbsp</a>
+            <a href="/admin/article/delete/{{article.id|e}}"><span class="glyphicon glyphicon-trash"></span></a>
+          </td>
         </tr>
       {% endfor %}
     </tbody>
