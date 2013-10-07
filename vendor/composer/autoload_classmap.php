@@ -6,5 +6,8 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'ESProviders\\LitleValidatorServiceProvider' => $baseDir . '/app/ESProviders/LitleValidatorServiceProvider.php',
     'SessionHandlerInterface' => $vendorDir . '/symfony/http-foundation/Symfony/Component/HttpFoundation/Resources/stubs/SessionHandlerInterface.php',
+    'SimpleModel\\Article' => $baseDir . '/app/SimpleModel/Article.php',
+    'SimpleModel\\BaseModel' => $baseDir . '/app/SimpleModel/BaseModel.php',
 );

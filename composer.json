@@ -7,6 +7,6 @@
         , "doctrine/dbal": "2.2.*"
     },
     "autoload": {
-        "psr-0": {"SimpleModel": "app/"}
+        "classmap": ["app/"]
     }
 }
