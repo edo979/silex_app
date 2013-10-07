@@ -77,19 +77,28 @@ abstract class BaseModel
   public function save($data, $id = NULL)
   {
     // Set timestamps
-    if($this->_timestamps == TRUE)
+    if ($this->_timestamps == TRUE)
     {
       $now = date('Y-m-d H:i:s');
       $id || $data['created'] = $now;
       $data['modified'] = $now;
     }
-    
-    $filter = $this->_primaryFilter;
-    $id = $filter($id);
 
-    // Update
-    $result = $this->conn->update($this->_tableName, $data, array( $this->_primaryKey => $id));
-    return $result;
+    if ($id != NULL)
+    {
+      // Update
+      $filter = $this->_primaryFilter;
+      $id = $filter($id);
+
+      return $this->conn
+          ->update($this->_tableName, $data, array($this->_primaryKey => $id));
+    }
+    else
+    {
+      // Save
+      return $this->conn
+        ->insert($this->_tableName, $data);
+    }
   }
 
   public function delete($id)

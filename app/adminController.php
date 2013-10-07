@@ -4,6 +4,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 $admin = $app['controllers_factory'];
 
+// Dashboard
 $admin->get('/dashboard', function (Silex\Application $app)
   {
     $pageId = 'dashboard';
@@ -13,10 +14,12 @@ $admin->get('/dashboard', function (Silex\Application $app)
     ));
   })->bind('dashboard');
 
+  
+  
+// List Articles
 $admin->get('/articles', function (Silex\Application $app)
   {
     $pageId = 'articles';
-    $conn = $app['db'];
     
     $articles = $app['model.article']->get();
 
@@ -27,10 +30,48 @@ $admin->get('/articles', function (Silex\Application $app)
     ));
   })->bind('articles');
   
+  
+  
+  // New Article show form
+  $admin->get('/articles/new', function (Silex\Application $app)
+  {
+    $pageId = 'newArticle';
+    
+    // Empty values for form
+    $article = array('title' => '', 'body' => '');
+
+    return $app['twig']->render('admin/article.twig', array(
+          'pageId' => $pageId,
+          'title'  => ucfirst($pageId),
+          'article'=> $article
+    ));
+  })->bind('articlesNew');
+  
+  // New Article process form
+  $admin->post('/articles/new', function (Silex\Application $app, Request $request)
+  {    
+    $data['title'] = $request->get('title'); 
+    $data['body'] = $request->get('body'); 
+    
+    $article = $app['model.article']->save($data);
+    
+    if($article)
+    {
+      // Redirect
+      return $app->redirect('/admin/articles');
+    }
+    else
+    {
+      // Show errors
+    }
+  });  
+  
+  
+  
+  // Article Edit show form
   $admin->get('/article/{id}', function (Silex\Application $app, $id)
   {
     $pageId = 'article';
-    $conn = $app['db'];
     
     $article = $app['model.article']->get($id);
     
@@ -41,21 +82,20 @@ $admin->get('/articles', function (Silex\Application $app)
     ));
   })->bind('article');
   
+  // Article Edit process form
   $admin->post('/article/{id}', function (Silex\Application $app, Request $request, $id)
   {
-    $pageId = 'article';
-    $conn = $app['db'];
     $data = array();
     
     $data['title'] = $request->get('title'); 
     $data['body'] = $request->get('body'); 
     
     $article = $app['model.article']->save($data, $id);
-    
+
     if($article)
     {
       // Redirect
-      return $app->redirect($app['url_generator']->generate('articles'));
+      return $app->redirect('/admin/articles');
     }
     else
     {

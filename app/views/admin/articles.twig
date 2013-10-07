@@ -1,7 +1,14 @@
 {% extends 'admin/layout.twig' %}
 
 {% block main %}
-<h2>Articles in the database</h2>
+  <h2>Articles in the database
+    <a href="/admin/articles/new">
+      <button type="button" class="btn btn-success pull-right">
+        <span class="glyphicon glyphicon-plus"> New</span>
+      </button>
+    </a>
+  </h2>
+
   <table class="table table-striped">
     <thead>
       <tr>
@@ -26,6 +33,6 @@
 {% endblock %}
 
 {% block sidebar %}
-<h2>Main column</h2>
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi, quos, molestiae, perspiciatis fugiat facilis rem dicta eum minus fugit culpa nobis autem. Beatae minima nihil doloremque accusamus explicabo voluptas nemo?</p>
+  <h2>Main column</h2>
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi, quos, molestiae, perspiciatis fugiat facilis rem dicta eum minus fugit culpa nobis autem. Beatae minima nihil doloremque accusamus explicabo voluptas nemo?</p>
 {% endblock %}
