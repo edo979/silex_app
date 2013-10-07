@@ -53,4 +53,4 @@ $app->get('/login', function(Request $request) use ($app)
     ));
   })->bind('login');
   
-$app->mount('/admin', include 'adminController.php');
+$app->mount('/admin', include 'admin/controller.php');

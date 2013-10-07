@@ -97,13 +97,18 @@ abstract class BaseModel
     {
       // Save
       return $this->conn
-        ->insert($this->_tableName, $data);
+          ->insert($this->_tableName, $data);
     }
   }
 
   public function delete($id)
   {
-    
+    $filter = $this->_primaryFilter;
+    $id = $filter($id);
+
+    return $this->conn
+        ->delete($this->_tableName, array($this->_primaryKey => $id));
+    // DELETE FROM user WHERE id = ? (1)
   }
 
 }
