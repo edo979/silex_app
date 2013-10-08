@@ -37,17 +37,6 @@ abstract class BaseModel
    */
   protected $conn;
 
-  /**
-   * Rules for validation in forms
-   * @var type mixed
-   */
-  public $rules = array();
-
-//  public function __construct(Connections $conn)
-//  {
-//    $this->conn = $conn;
-//  }
-
   public function get($id = NULL)
   {
     if ($id != NULL)
