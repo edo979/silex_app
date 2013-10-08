@@ -1,5 +1,15 @@
 {% extends 'admin/layout.twig' %}
 
+{% block headerScripts %}
+  {{ parent() }}
+  <script type="text/javascript" src="/js/tinymce/tinymce.min.js"></script>
+  <script type="text/javascript">
+    tinymce.init({
+      selector: "textarea"
+    });
+  </script>
+{% endblock %}
+
 {% block main %}
   <form method="post" role="form">
     <div class="form-group">
