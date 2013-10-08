@@ -1,6 +1,6 @@
 <?php
 
-namespace SimpleModel;
+namespace LittleModel;
 
 abstract class BaseModel
 {

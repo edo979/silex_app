@@ -1,6 +1,6 @@
 <?php
 
-namespace SimpleModel;
+namespace LittleModel;
 
 use \Doctrine\DBAL\Connection;
 

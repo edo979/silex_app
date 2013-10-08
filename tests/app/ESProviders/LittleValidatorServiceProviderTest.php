@@ -8,7 +8,7 @@ use Silex\Provider\DoctrineServiceProvider;
  *
  * @author Edis Selimovic
  */
-class LitleValidatorServiceProviderTest extends PHPUnit_Framework_TestCase
+class LittleValidatorServiceProviderTest extends PHPUnit_Framework_TestCase
 {
 
   public $app;

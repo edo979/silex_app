@@ -8,11 +8,15 @@ use Silex\ServiceProviderInterface;
 /**
  * Validate data
  *
- * @author Comp
+ * @author Edis Selimovic
  */
-class LitleValidatorServiceProvider implements ServiceProviderInterface
+class LittleValidatorServiceProvider implements ServiceProviderInterface
 {
 
+  /**
+   * Hold error from validator
+   * @var array
+   */
   private $errors = array();
 
   public function boot(Application $app)
@@ -31,6 +35,13 @@ class LitleValidatorServiceProvider implements ServiceProviderInterface
       });
   }
 
+  /**
+   * Validate data against rules
+   * 
+   * @param array $data
+   * @param array $rules
+   * @return boolean
+   */
   private function validate($data, $rules)
   {
     $valid = TRUE;
@@ -50,6 +61,13 @@ class LitleValidatorServiceProvider implements ServiceProviderInterface
     return $valid;
   }
 
+  /**
+   * Validate is value empty, for required field in forms
+   * 
+   * @param string $value
+   * @param string $fildname
+   * @return boolean
+   */
   private function required($value, $fildname)
   {
     $valid = !empty($value);
