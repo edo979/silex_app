@@ -36,4 +36,27 @@
   <h2>Main column</h2>
   <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi, quos, molestiae, perspiciatis fugiat facilis rem dicta eum minus fugit culpa nobis autem. Beatae minima nihil doloremque accusamus explicabo voluptas nemo?</p>
 {% endblock %}
+  
+  {%block javascript%}
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="/js/jquery.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="/js/bootstrap.min.js"></script>
+    <!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
+    <script src="/js/imageUpload/jquery.ui.widget.js"></script>
+    <!-- The Load Image plugin is included for the preview images and image resizing functionality -->
+    <script src="/js/imageUpload/load-image.min.js"></script>
+    <!-- The Canvas to Blob plugin is included for image resizing functionality -->
+    <script src="/js/imageUpload/canvas-to-blob.min.js"></script>
+    <!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
+    <script src="/js/imageUpload/jquery.iframe-transport.js"></script>
+    <!-- The basic File Upload plugin -->
+    <script src="/js/imageUpload/jquery.fileupload.js"></script>
+    <!-- The File Upload processing plugin -->
+    <script src="/js/imageUpload/jquery.fileupload-process.js"></script>
+    <!-- The File Upload image preview & resize plugin -->
+    <script src="/js/imageUpload/jquery.fileupload-image.js"></script>
+    <!-- MY script -->
+    <script src="/js/pagescript.js"></script>
+  {% endblock %}
 
