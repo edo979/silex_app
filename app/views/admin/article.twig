@@ -2,6 +2,7 @@
 
 {% block headerScripts %}
   {{ parent() }}
+  <link href="/css/myCSS.css" rel="stylesheet" media="screen">
   <script type="text/javascript" src="/js/tinymce/tinymce.min.js"></script>
   <script type="text/javascript">
     tinymce.init({
@@ -18,6 +19,25 @@
 {% endblock %}
 
 {% block main %}
+  
+  <h2>Menage Images</h2>
+  <span class="btn btn-success fileinput-button">
+        <i class="glyphicon glyphicon-plus"></i>
+        <span>Add files...</span>
+        <!-- The file input field used as target for the file upload widget -->
+        <input id="fileupload" type="file" name="files[]" multiple>
+  </span>
+  <br>
+  <br>
+  <!-- The global progress bar -->
+  <div id="progress" class="progress">
+      <div class="progress-bar progress-bar-success"></div>
+  </div>
+  <!-- The container for the uploaded files -->
+  <div id="files" class="files"></div>
+  <br>
+  
+  
   <form method="post" role="form">
     <div class="form-group">
       <label for="title">Title</label>
