@@ -16,7 +16,7 @@ class LittleValidatorServiceProviderTest extends PHPUnit_Framework_TestCase
   public function setUp()
   {
     $this->app = new Silex\Application();
-    $this->app->register(new ESProviders\LitleValidatorServiceProvider());
+    $this->app->register(new ESProviders\LittleValidatorServiceProvider());
 
     // Database
     $this->app->register(new DoctrineServiceProvider(), array(

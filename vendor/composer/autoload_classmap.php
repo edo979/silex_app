@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'ESProviders\\LittlePhotoServiceProvider' => $baseDir . '/app/ESProviders/LittlePhotoServiceProvider.php',
     'ESProviders\\LittleValidatorServiceProvider' => $baseDir . '/app/ESProviders/LittleValidatorServiceProvider.php',
     'LittleModel\\Article' => $baseDir . '/app/ESProviders/LittleModel/Article.php',
     'LittleModel\\BaseModel' => $baseDir . '/app/ESProviders/LittleModel/BaseModel.php',
