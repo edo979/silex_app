@@ -1,6 +1,20 @@
 <?php
+namespace ESProviders;
 
-class LittlePhotoServiceProviderTest extends PHPUnit_Framework_TestCase
+/**
+ * Mock getimagesize for testing purpose
+ * 
+ * @param null $filename
+ * @return array
+ */
+function getimagesize($filename=null)
+{
+  $filename = null;
+  
+  return array(900, 800);
+}
+
+class LittlePhotoServiceProviderTest extends \PHPUnit_Framework_TestCase
 {
 
   public $app;
@@ -9,11 +23,11 @@ class LittlePhotoServiceProviderTest extends PHPUnit_Framework_TestCase
 
   public function setUp()
   {
-    $this->app = new Silex\Application();
-    $this->app->register(new ESProviders\LittlePhotoServiceProvider());
+    $this->app = new \Silex\Application();
+    $this->app->register(new LittlePhotoServiceProvider());
 
-    $this->testClass = new ESProviders\LittlePhotoServiceProvider;
-    $this->reflector = new ReflectionClass($this->testClass);
+    $this->testClass = new LittlePhotoServiceProvider;
+    $this->reflector = new \ReflectionClass($this->testClass);
   }
 
   public function testRegisteringProvider()
@@ -64,6 +78,25 @@ class LittlePhotoServiceProviderTest extends PHPUnit_Framework_TestCase
     $handlerProp = $this->reflector->getProperty('errors');
     $handlerProp->setAccessible(true);
     assertEquals('No file.', $handlerProp->getValue($this->testClass)[1]);
+  }
+  
+  public function testValidateFile()
+  {
+    $attache_file = $this->reflector->getMethod('attach_file');
+    $attache_file->setAccessible(true);
+    $attache_file->invoke($this->testClass, array(
+        'error'    => 0,
+        'tmp_name' => 'upload',
+        'name'     => '/images/image.jpg',
+        'type'     => 'jpg',
+        'size'     => 500
+    ));// Other value is set in mocked getimagesize on the top of this class
+    
+    $file = $this->reflector->getMethod('validate_file');
+    $file->setAccessible(true);
+    $validate = $file->invoke($this->testClass);
+    
+    assertEquals(TRUE, $validate);
   }
 
 }

@@ -14,7 +14,7 @@ class LittlePhotoServiceProvider implements ServiceProviderInterface
   private $size;
   private $errors = array();
   private $upload_errors = array(
-      // http://www.php.net/manual/en/features.file-upload.errors.php
+// http://www.php.net/manual/en/features.file-upload.errors.php
       UPLOAD_ERR_OK         => "No errors.",
       UPLOAD_ERR_INI_SIZE   => "Larger than upload_max_filesize.",
       UPLOAD_ERR_FORM_SIZE  => "Larger than form MAX_FILE_SIZE.",
@@ -36,6 +36,8 @@ class LittlePhotoServiceProvider implements ServiceProviderInterface
       {
         
       });
+
+    $app['photoHandler.errors'] = $this->errors;
   }
 
   // Get file from form
@@ -66,6 +68,34 @@ class LittlePhotoServiceProvider implements ServiceProviderInterface
     }
   }
 
-// Validate file
+  // Validate file
+  private function validate_file()
+  {
+    $max_size = 5000;             // maximum file size, in KiloBytes
+    $alwidth = 900;               // maximum allowed width, in pixels
+    $alheight = 800;              // maximum allowed height, in pixels
+    // check for uploaded file size
+    if ($this->size > $max_size)
+    {
+      return FALSE;
+    }
+
+    //check if its image file
+    if (!getimagesize($this->temp_path))
+    {
+      return FALSE;
+    }
+
+    // restrict width and height if its image or photo file
+    list($width, $height) = getimagesize($this->temp_path);
+
+    if ($width > $alwidth || $height > $alheight)
+    {
+      return FALSE;
+    }
+
+    return TRUE;
+  }
+
 // Save file to db
 }
