@@ -36,6 +36,9 @@ $app->register(new DoctrineServiceProvider(), array(
 $app['model.article'] = $app->share(function($app){
   return new Article($app['db']);
 });
+$app['model.photo'] = $app->share(function($app){
+  return new Photo($app['db']);
+});
 
 // Sessions
 $app->register(new SessionServiceProvider());

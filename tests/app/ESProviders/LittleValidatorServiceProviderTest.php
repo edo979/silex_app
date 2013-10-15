@@ -1,6 +1,6 @@
 <?php
 
-use SimpleModel\Article;
+use LittleModel\Article;
 use Silex\Provider\DoctrineServiceProvider;
 
 /**

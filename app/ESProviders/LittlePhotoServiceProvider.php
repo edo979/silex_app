@@ -7,14 +7,9 @@ use Silex\ServiceProviderInterface;
 
 class LittlePhotoServiceProvider implements ServiceProviderInterface
 {
-
-  private $temp_path;
-  private $filename;
-  private $type;
-  private $size;
   private $errors = array();
   private $upload_errors = array(
-// http://www.php.net/manual/en/features.file-upload.errors.php
+      // http://www.php.net/manual/en/features.file-upload.errors.php
       UPLOAD_ERR_OK         => "No errors.",
       UPLOAD_ERR_INI_SIZE   => "Larger than upload_max_filesize.",
       UPLOAD_ERR_FORM_SIZE  => "Larger than form MAX_FILE_SIZE.",
@@ -24,6 +19,7 @@ class LittlePhotoServiceProvider implements ServiceProviderInterface
       UPLOAD_ERR_CANT_WRITE => "Can't write to disk.",
       UPLOAD_ERR_EXTENSION  => "File upload stopped by extension."
   );
+  private $_model;
 
   public function boot(Application $app)
   {
@@ -32,62 +28,54 @@ class LittlePhotoServiceProvider implements ServiceProviderInterface
 
   public function register(Application $app)
   {
+    // Set model to store images
+    $this->_model = $app['model.photo'];
+    
     $app['photoHandler'] = $app->protect(function() use($app)
       {
-        
+        // Attach File
+        // Validate File
+        // Save File
       });
 
     $app['photoHandler.errors'] = $this->errors;
   }
 
-  // Get file from form
-  private function attach_file($file)
+  // Validate file
+  private function validate_file($file)
   {
+    $upload_path = 'upload/';
+    $max_size = 5000;             // maximum file size, in KiloBytes
+    $alwidth = 900;               // maximum allowed width, in pixels
+    $alheight = 800;              // maximum allowed height, in pixels
     // Perform error checking on the form parameters
     if (!$file || empty($file) || !is_array($file))
     {
       // error: nothing uploaded or wrong argument usage
       $this->errors[] = "No file was uploaded.";
-      return false;
+      return FALSE;
     }
     elseif ($file['error'] != 0)
     {
       // error: report what PHP says went wrong
       $this->errors[] = $this->upload_errors[$file['error']];
-      return false;
+      return FALSE;
     }
-    else
-    {
-      // Set object attributes to the form parameters.
-      $this->temp_path = $file['tmp_name'];
-      $this->filename = basename($file['name']);
-      $this->type = $file['type'];
-      $this->size = $file['size'];
 
-      return true;
-    }
-  }
-
-  // Validate file
-  private function validate_file()
-  {
-    $max_size = 5000;             // maximum file size, in KiloBytes
-    $alwidth = 900;               // maximum allowed width, in pixels
-    $alheight = 800;              // maximum allowed height, in pixels
     // check for uploaded file size
-    if ($this->size > $max_size)
+    if ($file['size'] > $max_size)
     {
       return FALSE;
     }
 
     //check if its image file
-    if (!getimagesize($this->temp_path))
+    if (!getimagesize($file['tmp_name']))
     {
       return FALSE;
     }
 
     // restrict width and height if its image or photo file
-    list($width, $height) = getimagesize($this->temp_path);
+    list($width, $height) = getimagesize($file['tmp_name']);
 
     if ($width > $alwidth || $height > $alheight)
     {
@@ -97,5 +85,23 @@ class LittlePhotoServiceProvider implements ServiceProviderInterface
     return TRUE;
   }
 
-// Save file to db
+  // Save file to db
+  private function save_file($file)
+  {
+    // Validate file
+    if (!$this->validate_file($file))
+    {
+      return FALSE;
+    }
+
+    // Set image attribute from upload file.
+    $data = array(
+        'filename'  => basename($file['name']),
+        'temp_path' => $file['tmp_name']
+    );
+    
+    // Ready to save
+    $this->_model->save($data);
+  }
+
 }
