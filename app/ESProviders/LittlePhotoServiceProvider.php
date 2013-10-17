@@ -31,11 +31,14 @@ class LittlePhotoServiceProvider implements ServiceProviderInterface
     // Set model to store images
     $this->_model = $app['model.photo'];
     
-    $app['photoHandler'] = $app->protect(function() use($app)
+    $app['photoHandler'] = $app->protect(function($file) use($app)
       {
-        // Attach File
-        // Validate File
-        // Save File
+        if ($this->validate_file($file))
+        {
+          $this->save_file($file);
+        }
+        
+        return FALSE;
       });
 
     $app['photoHandler.errors'] = $this->errors;

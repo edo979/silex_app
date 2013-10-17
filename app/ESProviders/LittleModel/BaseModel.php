@@ -1,6 +1,6 @@
 <?php
 
-namespace LittleModel;
+namespace ESProviders\LittleModel;
 
 abstract class BaseModel
 {
@@ -36,6 +36,11 @@ abstract class BaseModel
    * @var object
    */
   protected $conn;
+
+  public function __construct(Connection $conn)
+  {
+    $this->conn = $conn;
+  }
 
   public function get($id = NULL)
   {

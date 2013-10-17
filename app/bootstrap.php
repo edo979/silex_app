@@ -8,7 +8,8 @@ use Silex\Provider\SecurityServiceProvider;
 use Silex\Provider\DoctrineServiceProvider;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler;
 use Silex\Provider\TwigServiceProvider;
-use LittleModel\Article;
+use ESProviders\LittleModel\Article;
+use ESProviders\LittleModel\Photo;
 
 $app = new Silex\Application();
 $app['debug'] = true;

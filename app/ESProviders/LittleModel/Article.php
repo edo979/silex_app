@@ -1,6 +1,6 @@
 <?php
 
-namespace LittleModel;
+namespace ESProviders\LittleModel;
 
 use \Doctrine\DBAL\Connection;
 
@@ -16,7 +16,7 @@ class Article extends BaseModel
    * @var type bool
    */
   protected $_timestamps = TRUE;
-  
+
   /**
    * Rules for validation in forms
    * @var type mixed
@@ -25,10 +25,5 @@ class Article extends BaseModel
       'title' => 'required',
       'body'  => 'required'
   );
-
-  public function __construct(Connection $conn)
-  {
-    $this->conn = $conn;
-  }
 
 }
