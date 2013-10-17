@@ -80,7 +80,7 @@ class LittlePhotoServiceProviderTest extends \PHPUnit_Framework_TestCase
         'db.options' => array()
     ));
     // Mock model 
-    $db = $this->getMock('\LittleModel\Photo', array('save'), array($this->app['db']));
+    $db = $this->getMock('ESProviders\LittleModel\Photo', array('save'), array($this->app['db']));
     $db->expects($this->once())
       ->method('save')
       ->with(array(

@@ -2,8 +2,6 @@
 
 namespace ESProviders\LittleModel;
 
-use \Doctrine\DBAL\Connection;
-
 class Photo extends BaseModel
 {
 
@@ -12,13 +10,13 @@ class Photo extends BaseModel
    */
   protected $_tableName = 'photos';
   
-  public function save($file)
-  {
-    // get id from database
-    // make new name for photo using id
-    // move photo to destination folder and rename
-    // save path and name to database
-  }
+//  public function save($file)
+//  {
+//    // get id from database
+//    // make new name for photo using id
+//    // move photo to destination folder and rename
+//    // save path and name to database
+//  }
   
   private function get_last_id()
   {

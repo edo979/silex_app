@@ -2,8 +2,6 @@
 
 namespace ESProviders\LittleModel;
 
-use \Doctrine\DBAL\Connection;
-
 class Article extends BaseModel
 {
 

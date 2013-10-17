@@ -7,6 +7,7 @@ use Silex\ServiceProviderInterface;
 
 class LittlePhotoServiceProvider implements ServiceProviderInterface
 {
+
   private $errors = array();
   private $upload_errors = array(
       // http://www.php.net/manual/en/features.file-upload.errors.php
@@ -30,14 +31,9 @@ class LittlePhotoServiceProvider implements ServiceProviderInterface
   {
     // Set model to store images
     $this->_model = $app['model.photo'];
-    
-    $app['photoHandler'] = $app->protect(function($file) use($app)
-      {
-        if ($this->validate_file($file))
-        {
-          $this->save_file($file);
-        }
-        
+
+    $app['photoHandler'] = $app->protect(function($file) use($app) {
+        $this->save_file($file);
         return FALSE;
       });
 
@@ -102,9 +98,11 @@ class LittlePhotoServiceProvider implements ServiceProviderInterface
         'filename'  => basename($file['name']),
         'temp_path' => $file['tmp_name']
     );
-    
+
     // Ready to save
     $this->_model->save($data);
+
+    return TRUE;
   }
 
 }

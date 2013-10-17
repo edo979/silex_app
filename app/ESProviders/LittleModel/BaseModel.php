@@ -2,6 +2,8 @@
 
 namespace ESProviders\LittleModel;
 
+use \Doctrine\DBAL\Connection;
+
 abstract class BaseModel
 {
 
