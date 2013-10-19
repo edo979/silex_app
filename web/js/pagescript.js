@@ -16,108 +16,60 @@ $(function() {
     }
   };
 });
+
 // Upload and resize image
-/*jslint unparam: true, regexp: true */
-/*global window, $ */
-$(function() {
-  'use strict';
-  // Change this to the location of your server-side upload handler:
-  var url = window.location.hostname === 'webdev.dev' ?
-      '//webdev.dev/' : 'server/php/',
-      uploadButton = $('<button/>')
-      .addClass('btn btn-primary')
-      .prop('disabled', true)
-      .text('Processing...')
-      .on('click', function() {
-    var $this = $(this),
-        data = $this.data();
-    $this
-        .off('click')
-        .text('Abort')
-        .on('click', function() {
-      $this.remove();
-      data.abort();
-    });
-    data.submit().always(function() {
-      $this.remove();
-    });
-  });
-  $('#fileupload').fileupload({
-    url: url,
-    dataType: 'json',
-    autoUpload: false,
-    acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
-    maxFileSize: 5000000, // 5 MB
-    // Enable image resizing, except for Android and Opera,
-    // which actually support image resizing, but fail to
-    // send Blob objects via XHR requests:
-    disableImageResize: /Android(?!.*Chrome)|Opera/
-        .test(window.navigator && navigator.userAgent),
-    imageMaxWidth: 800,
-    imageMaxHeight: 800,
-    imageCrop: true, // Force cropped images
-    previewMaxWidth: 100,
-    previewMaxHeight: 100,
-    previewCrop: true
-  }).on('fileuploadadd', function(e, data) {
-    data.context = $('<div/>').appendTo('#files');
-    $.each(data.files, function(index, file) {
-      var node = $('<p/>')
-          .append($('<span/>').text(file.name));
-      if (!index) {
-        node
-            .append('<br>')
-            .append(uploadButton.clone(true).data(data));
-      }
-      node.appendTo(data.context);
-    });
-  }).on('fileuploadprocessalways', function(e, data) {
-    var index = data.index,
-        file = data.files[index],
-        node = $(data.context.children()[index]);
-    if (file.preview) {
-      node
-          .prepend('<br>')
-          .prepend(file.preview);
+// Custom example logic
+var uploader = new plupload.Uploader({
+  runtimes: 'html5,html4',
+  browse_button: 'pickfiles', // you can pass in id...
+  container: document.getElementById('container'), // ... or DOM Element itself
+  url: '//webdev.dev/admin/photos/new',
+  filters: {
+    max_file_size: '5mb',
+    mime_types: [
+      {title: "Image files", extensions: "jpg,gif,png"},
+      {title: "Zip files", extensions: "zip"}
+    ]
+  },
+  // User can upload no more then 20 files in one go (sets multiple_queues to false)
+  max_file_count: 5,
+  chunk_size: '1mb',
+  // Resize images on clientside if we can
+  resize: {
+    width: 800,
+    height: 600,
+    quality: 90,
+    crop: false // crop to exact dimensions
+  },
+  // Rename files by clicking on their titles
+  rename: true,
+  // Views to activate
+  views: {
+    list: true,
+    thumbs: true, // Show thumbs
+    active: 'thumbs'
+  },
+  init: {
+    PostInit: function() {
+      document.getElementById('filelist').innerHTML = '';
+
+      document.getElementById('uploadfiles').onclick = function() {
+        uploader.start();
+        return false;
+      };
+    },
+    FilesAdded: function(up, files) {
+      plupload.each(files, function(file) {
+        document.getElementById('filelist').innerHTML += '<div id="' + file.id + '">' + file.name + ' (' + plupload.formatSize(file.size) + ') <b></b></div>';
+      });
+    },
+    UploadProgress: function(up, file) {
+      document.getElementById(file.id).getElementsByTagName('b')[0].innerHTML = '<span>' + file.percent + "%</span>";
+    },
+    Error: function(up, err) {
+      document.getElementById('console').innerHTML += "\nError #" + err.code + ": " + err.message;
     }
-    if (file.error) {
-      node
-          .append('<br>')
-          .append($('<span class="text-danger"/>').text(file.error));
-    }
-    if (index + 1 === data.files.length) {
-      data.context.find('button')
-          .text('Upload')
-          .prop('disabled', !!data.files.error);
-    }
-  }).on('fileuploadprogressall', function(e, data) {
-    var progress = parseInt(data.loaded / data.total * 100, 10);
-    $('#progress .progress-bar').css(
-        'width',
-        progress + '%'
-        );
-  }).on('fileuploaddone', function(e, data) {
-    $.each(data.result.files, function(index, file) {
-      if (file.url) {
-        var link = $('<a>')
-            .attr('target', '_blank')
-            .prop('href', file.url);
-        $(data.context.children()[index])
-            .wrap(link);
-      } else if (file.error) {
-        var error = $('<span class="text-danger"/>').text(file.error);
-        $(data.context.children()[index])
-            .append('<br>')
-            .append(error);
-      }
-    });
-  }).on('fileuploadfail', function(e, data) {
-    $.each(data.files, function(index, file) {
-      var error = $('<span class="text-danger"/>').text('File upload failed.');
-      $(data.context.children()[index])
-          .append('<br>')
-          .append(error);
-    });
-  }).prop('disabled', !$.support.fileInput)
-      .parent().addClass($.support.fileInput ? undefined : 'disabled');
+  }
 });
+
+uploader.init();

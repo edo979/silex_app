@@ -113,5 +113,30 @@ $admin->get('/article/delete/{id}', function (Silex\Application $app, $id) {
       // Show errors
     }
   });
+  
+  
+  
+  // Photos
+  // New Photo
+  $admin->post('/photos/new', function (Silex\Application $app, Request $request) {
+//    $data['title'] = $request->get('title');
+//    $data['body'] = $request->get('body');
+//
+//    $article = $app['model.article']->save($data);
+//
+//    if ($article)
+//    {
+//      // Redirect
+//      return $app->redirect('/admin/articles');
+//    }
+//    else
+//    {
+//      // Show errors
+//    }
+    
+    // Use validator
+    // If pass validator upload photo
+    include_once 'upload.php';
+  });
 
 return $admin;

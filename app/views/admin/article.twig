@@ -2,42 +2,44 @@
 
 {% block headerScripts %}
   {{ parent() }}
-  <link href="/css/myCSS.css" rel="stylesheet" media="screen">
-  <script type="text/javascript" src="/js/tinymce/tinymce.min.js"></script>
-  <script type="text/javascript">
-    tinymce.init({
-      height: "350",
-      selector: "textarea",
-      language: "bs",
-      menu: 'false',
-      plugins: "wordcount save",
-      toolbar: " undo redo | | save cancel | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent |  removeformat",
-      save_enablewhendirty: true,
-      save_onsavecallback: function() {console.log("Save");}
-    });
+<link href="/css/myCSS.css" rel="stylesheet" media="screen">
+<script type="text/javascript" src="/js/tinymce/tinymce.min.js"></script>
+<script type="text/javascript">
+  tinymce.init({
+    height: "350",
+    selector: "textarea",
+    language: "bs",
+    menu: 'false',
+    plugins: "wordcount save",
+    toolbar: " undo redo | | save cancel | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent |  removeformat",
+    save_enablewhendirty: true,
+    save_onsavecallback: function() {
+      console.log("Save");
+    }
+  });
   </script>
 {% endblock %}
 
 {% block main %}
-  
+
   <h2>Menage Images</h2>
-  <span class="btn btn-success fileinput-button">
-        <i class="glyphicon glyphicon-plus"></i>
-        <span>Add files...</span>
-        <!-- The file input field used as target for the file upload widget -->
-        <input id="fileupload" type="file" name="files[]" multiple>
-  </span>
-  <br>
-  <br>
-  <!-- The global progress bar -->
-  <div id="progress" class="progress">
-      <div class="progress-bar progress-bar-success"></div>
+  <div id="filelist">Your browser doesn't have Flash, Silverlight or HTML5 support.</div>
+  <br />
+
+  <div id="container">
+    <span class="btn btn-primary fileinput-button" id="pickfiles">
+      <i class="glyphicon glyphicon-plus"></i>
+      <span>[Select files]</span>
+    </span>
+    <span class="btn btn-success fileinput-button" id="uploadfiles">
+      <i class="glyphicon glyphicon-plus"></i>
+      <span>[Upload files]</span>
+    </span>
   </div>
-  <!-- The container for the uploaded files -->
-  <div id="files" class="files"></div>
-  <br>
-  
-  
+
+  <br />
+
+
   <form method="post" role="form">
     <div class="form-group">
       <label for="title">Title</label>
@@ -56,27 +58,14 @@
   <h2>Main column</h2>
   <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi, quos, molestiae, perspiciatis fugiat facilis rem dicta eum minus fugit culpa nobis autem. Beatae minima nihil doloremque accusamus explicabo voluptas nemo?</p>
 {% endblock %}
-  
-  {%block javascript%}
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="/js/jquery.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="/js/bootstrap.min.js"></script>
-    <!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
-    <script src="/js/imageUpload/jquery.ui.widget.js"></script>
-    <!-- The Load Image plugin is included for the preview images and image resizing functionality -->
-    <script src="/js/imageUpload/load-image.min.js"></script>
-    <!-- The Canvas to Blob plugin is included for image resizing functionality -->
-    <script src="/js/imageUpload/canvas-to-blob.min.js"></script>
-    <!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
-    <script src="/js/imageUpload/jquery.iframe-transport.js"></script>
-    <!-- The basic File Upload plugin -->
-    <script src="/js/imageUpload/jquery.fileupload.js"></script>
-    <!-- The File Upload processing plugin -->
-    <script src="/js/imageUpload/jquery.fileupload-process.js"></script>
-    <!-- The File Upload image preview & resize plugin -->
-    <script src="/js/imageUpload/jquery.fileupload-image.js"></script>
-    <!-- MY script -->
-    <script src="/js/pagescript.js"></script>
-  {% endblock %}
 
+  {%block javascript%}
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="/js/jquery.js"></script>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <script src="/js/bootstrap.min.js"></script>
+  <!-- Plupload script for menage images upload -->
+  <script src="/js/plupload/plupload.full.min.js"></script>
+  <!-- MY script -->
+  <script src="/js/pagescript.js"></script>
+  {% endblock %}
