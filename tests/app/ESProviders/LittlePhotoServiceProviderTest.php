@@ -73,38 +73,4 @@ class LittlePhotoServiceProviderTest extends \PHPUnit_Framework_TestCase
     assertEquals(TRUE, $validate);
   }
 
-  public function testSaveFileToDB()
-  {
-    // Register db
-    $this->app->register(new DoctrineServiceProvider(), array(
-        'db.options' => array()
-    ));
-    // Mock model 
-    $db = $this->getMock('ESProviders\LittleModel\Photo', array('save'), array($this->app['db']));
-    $db->expects($this->once())
-      ->method('save')
-      ->with(array(
-          'filename'  => 'image.jpg',
-          'temp_path' => 'temp'
-    ));
-
-    // Register model
-    $this->app['model.photo'] = $this->app->share(function() use($db)
-      {
-        return $db;
-      });
-    // Register service provider
-    $this->app->register($this->testClass);
-
-    // Push model to testing class
-    $model = $this->reflector->getProperty('_model');
-    $model->setAccessible(true);
-    $model->setValue($this->testClass, $this->app['model.photo']);
-
-    //  Call save_file method
-    $save = $this->reflector->getMethod('save_file');
-    $save->setAccessible(true);
-    $data = $save->invoke($this->testClass, $this->fake_file);
-  }
-
 }

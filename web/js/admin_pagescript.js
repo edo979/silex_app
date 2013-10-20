@@ -15,7 +15,7 @@ var uploader = new plupload.Uploader({
   container: document.getElementById('container'), // ... or DOM Element itself
   url: '//webdev.dev/admin/photos/new',
   filters: {
-    max_file_size: '5mb',
+    max_file_size: '3mb',
     mime_types: [
       {title: "Image files", extensions: "jpg,gif,png"},
       {title: "Zip files", extensions: "zip"}
@@ -27,17 +27,9 @@ var uploader = new plupload.Uploader({
   // Resize images on clientside if we can
   resize: {
     width: 800,
-    height: 600,
+    height: 800,
     quality: 90,
     crop: false // crop to exact dimensions
-  },
-  // Rename files by clicking on their titles
-  rename: true,
-  // Views to activate
-  views: {
-    list: true,
-    thumbs: true, // Show thumbs
-    active: 'thumbs'
   },
   init: {
     PostInit: function() {

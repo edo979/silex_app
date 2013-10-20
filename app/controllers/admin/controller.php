@@ -5,7 +5,8 @@ use Symfony\Component\HttpFoundation\Request;
 $admin = $app['controllers_factory'];
 
 // Dashboard
-$admin->get('/dashboard', function (Silex\Application $app) {
+$admin->get('/dashboard', function (Silex\Application $app)
+  {
     $pageId = 'dashboard';
     return $app['twig']->render('admin/dashboard.twig', array(
           'pageId' => $pageId,
@@ -16,7 +17,8 @@ $admin->get('/dashboard', function (Silex\Application $app) {
 
 
 // List Articles
-$admin->get('/articles', function (Silex\Application $app) {
+$admin->get('/articles', function (Silex\Application $app)
+  {
     $pageId = 'articles';
 
     $articles = $app['model.article']->get();
@@ -31,7 +33,8 @@ $admin->get('/articles', function (Silex\Application $app) {
 
 
 // New Article show form
-$admin->get('/articles/new', function (Silex\Application $app) {
+$admin->get('/articles/new', function (Silex\Application $app)
+  {
     $pageId = 'newArticle';
 
     // Empty values for form
@@ -45,7 +48,8 @@ $admin->get('/articles/new', function (Silex\Application $app) {
   })->bind('articlesNew');
 
 // New Article process form
-$admin->post('/articles/new', function (Silex\Application $app, Request $request) {
+$admin->post('/articles/new', function (Silex\Application $app, Request $request)
+  {
     $data['title'] = $request->get('title');
     $data['body'] = $request->get('body');
 
@@ -65,7 +69,8 @@ $admin->post('/articles/new', function (Silex\Application $app, Request $request
 
 
 // Article Edit show form
-$admin->get('/article/{id}', function (Silex\Application $app, $id) {
+$admin->get('/article/{id}', function (Silex\Application $app, $id)
+  {
     $pageId = 'article';
 
     $article = $app['model.article']->get($id);
@@ -78,7 +83,8 @@ $admin->get('/article/{id}', function (Silex\Application $app, $id) {
   })->bind('article');
 
 // Article Edit process form
-$admin->post('/article/{id}', function (Silex\Application $app, Request $request, $id) {
+$admin->post('/article/{id}', function (Silex\Application $app, Request $request, $id)
+  {
     $data = array();
 
     $data['title'] = $request->get('title');
@@ -100,7 +106,8 @@ $admin->post('/article/{id}', function (Silex\Application $app, Request $request
 
 
 // Delete article
-$admin->get('/article/delete/{id}', function (Silex\Application $app, $id) {
+$admin->get('/article/delete/{id}', function (Silex\Application $app, $id)
+  {
     $article = $app['model.article']->delete($id);
 
     if ($article)
@@ -113,20 +120,19 @@ $admin->get('/article/delete/{id}', function (Silex\Application $app, $id) {
       // Show errors
     }
   });
-  
-  
-  
-  // Photos
-  // New Photo
-  $admin->post('/photos/new', function (Silex\Application $app, Request $request) {
-    $app->register(new ESProviders\LittlePhotoServiceProvider());
-    $validator = $app['photoHandler'];
+
+
+
+// Photos
+// New Photo
+$admin->post('/photos/new', function (Silex\Application $app)
+  {    
+    $app->register(new ESProviders\LittlePhotoServiceProvider(), array(
+        'photoHandler.temp_file' => $_FILES["file"],
+        'photoHandler.errors'    => array()
+    ));
     
-    var_dump($_FILES["file"]);
-    if($validator())
-    {
-      include_once 'upload.php';
-    }
+    return $app['photoHandler'];
   });
 
 return $admin;
