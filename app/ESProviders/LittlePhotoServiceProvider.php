@@ -32,8 +32,19 @@ class LittlePhotoServiceProvider implements ServiceProviderInterface
     // Set model to store images
     $this->_model = $app['model.photo'];
 
-    $app['photoHandler'] = $app->protect(function($file) use($app) {
-        $this->save_file($file);
+    $app['photoHandler'] = $app->protect(function($file) use($app)
+      {
+        if ($this->validate_file($file))
+        {
+          // Set image attribute from upload file.
+          $app['photoHandler.image'] = array(
+              'filename'  => basename($file['name']),
+              'temp_path' => $file['tmp_name']
+          );
+          
+          return TRUE;
+        }
+        
         return FALSE;
       });
 
@@ -80,27 +91,6 @@ class LittlePhotoServiceProvider implements ServiceProviderInterface
     {
       return FALSE;
     }
-
-    return TRUE;
-  }
-
-  // Save file to db
-  private function save_file($file)
-  {
-    // Validate file
-    if (!$this->validate_file($file))
-    {
-      return FALSE;
-    }
-
-    // Set image attribute from upload file.
-    $data = array(
-        'filename'  => basename($file['name']),
-        'temp_path' => $file['tmp_name']
-    );
-
-    // Ready to save
-    $this->_model->save($data);
 
     return TRUE;
   }

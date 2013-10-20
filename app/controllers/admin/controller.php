@@ -119,24 +119,14 @@ $admin->get('/article/delete/{id}', function (Silex\Application $app, $id) {
   // Photos
   // New Photo
   $admin->post('/photos/new', function (Silex\Application $app, Request $request) {
-//    $data['title'] = $request->get('title');
-//    $data['body'] = $request->get('body');
-//
-//    $article = $app['model.article']->save($data);
-//
-//    if ($article)
-//    {
-//      // Redirect
-//      return $app->redirect('/admin/articles');
-//    }
-//    else
-//    {
-//      // Show errors
-//    }
+    $app->register(new ESProviders\LittlePhotoServiceProvider());
+    $validator = $app['photoHandler'];
     
-    // Use validator
-    // If pass validator upload photo
-    include_once 'upload.php';
+    var_dump($_FILES["file"]);
+    if($validator())
+    {
+      include_once 'upload.php';
+    }
   });
 
 return $admin;
