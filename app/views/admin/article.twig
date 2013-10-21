@@ -42,11 +42,15 @@
   <form method="post" role="form">
     <div class="form-group">
       <label for="title">Title</label>
-      <input type="text" name="title" class="form-control" id="title" value="{{ article.title|e }}">
+      <input type="text" name="title" class="form-control" id="title" value="{% if article.title is defined %}{{ article.title|e }}{% else %}Input title{% endif %}">
     </div>
     <div class="form-group">
       <label for="body">Body</label>
-      <textarea class="form-control" name="body" id="body">{{ article.body|e }}</textarea>
+      <textarea class="form-control" name="body" id="body">
+        {% if article.body is defined %}
+            {{ article.body|e }}
+        {% else %}Input body{% endif %}
+      </textarea>
     </div>
     <button type="submit" class="btn btn-default">Submit</button>
   </form>
