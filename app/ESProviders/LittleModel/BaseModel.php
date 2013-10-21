@@ -69,6 +69,17 @@ abstract class BaseModel
   {
     
   }
+  
+  public function get_last_id()
+  {
+    // fetch last id from database
+    $sql = "SELECT id FROM {$this->_tableName} ORDER BY id DESC LIMIT 1";
+    $statement = $this->conn->prepare($sql);
+    $statement->execute();
+    $result = $statement->fetch();
+
+    return (string) $result['id'];
+  }
 
   public function save($data, $id = NULL)
   {

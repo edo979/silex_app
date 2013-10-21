@@ -132,7 +132,29 @@ $admin->post('/photos/new', function (Silex\Application $app)
         'photoHandler.errors'    => array()
     ));
     
-    return $app['photoHandler'];
+    $article_id = $app['model.article']->get_last_id();
+    
+    $fileName = $app['photoHandler'];
+    
+    if(!empty($fileName))
+    {
+      $data = array(
+        'filename' => $fileName,
+        'article_ids' => $article_id
+        );
+      
+    // save to db    
+    $app['model.photo']->save($data);
+    // get id from saved image
+    $id = $app['model.photo']->get_last_id();
+    
+    // Return JSON
+      die('{
+        "jsonrpc" : "2.0",
+        "result" : null,
+        "id" : '.$id.'
+      }');
+    }
   });
 
 return $admin;

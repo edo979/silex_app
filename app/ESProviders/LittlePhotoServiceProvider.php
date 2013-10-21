@@ -144,14 +144,14 @@ class LittlePhotoServiceProvider implements ServiceProviderInterface
       @mkdir($targetDir);
     }
 
-    // Get a file name
+    // Get a file name and replece with alfanum caracters
     if (isset($_REQUEST["name"]))
     {
-      $fileName = preg_replace('#[^A-Za-z0-9-./]#', '', $_REQUEST["name"]);
+      $fileName = preg_replace('#[^A-Za-z0-9.]#', '', $_REQUEST["name"]);
     }
     elseif (!empty($_FILES))
     {
-      $fileName = preg_replace('#[^A-Za-z0-9-./]#', '', $_FILES["file"]["name"]);
+      $fileName = preg_replace('#[^A-Za-z0-9.]#', '', $_FILES["file"]["name"]);
     }
     else
     {
@@ -160,10 +160,12 @@ class LittlePhotoServiceProvider implements ServiceProviderInterface
     
     // get last id from db
     $last_id = $this->_model->get_last_id();
+    $new_id = (int) $last_id + 1;
+    $new_id = (string) $new_id;
     // get extension
-    $fileName_extn = substr($fileName, strrpos($fileName, '.', -1)+1);
+    $fileName_extn = substr($fileName, strrpos($fileName, '.')+1);
     // set file name to last id from db
-    $fileName = 'image' . $last_id . '.' . $fileName_extn;
+    $fileName = 'image' . $new_id . '.' . $fileName_extn;
     
     $filePath = $targetDir . DIRECTORY_SEPARATOR . $fileName;
 
@@ -258,11 +260,7 @@ class LittlePhotoServiceProvider implements ServiceProviderInterface
     }
 
     // Return Success JSON-RPC response
-    die('{
-      "jsonrpc" : "2.0",
-      "result" : null,
-      "id" : 1
-    }');
+    return $fileName;
   }
 
 }
