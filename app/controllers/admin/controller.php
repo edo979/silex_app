@@ -126,35 +126,40 @@ $admin->get('/article/delete/{id}', function (Silex\Application $app, $id)
 // Photos
 // New Photo
 $admin->post('/photos/new', function (Silex\Application $app)
-  {    
+  {
     $app->register(new ESProviders\LittlePhotoServiceProvider(), array(
         'photoHandler.temp_file' => $_FILES["file"],
         'photoHandler.errors'    => array()
     ));
-    
+
     $article_id = $app['model.article']->get_last_id();
-    
+
     $fileName = $app['photoHandler'];
-    
-    if(!empty($fileName))
+
+    if (!empty($fileName))
     {
       $data = array(
-        'filename' => $fileName,
-        'article_ids' => $article_id
-        );
-      
-    // save to db    
-    $app['model.photo']->save($data);
-    // get id from saved image
-    $id = $app['model.photo']->get_last_id();
-    
-    // Return JSON
+          'filename'    => $fileName,
+          'article_ids' => $article_id
+      );
+
+      // save to db    
+      $app['model.photo']->save($data);
+      // get id from saved image
+      $id = $app['model.photo']->get_last_id();
+
+      // Return JSON with inserted image id
       die('{
         "jsonrpc" : "2.0",
         "result" : null,
-        "id" : '.$id.'
+        "id" : ' . $id . '
       }');
     }
+  });
+// New Photo
+$admin->get('/photos/article/{id}', function (Silex\Application $app, $id)
+  {
+    
   });
 
 return $admin;
