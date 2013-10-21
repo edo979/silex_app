@@ -147,17 +147,24 @@ class LittlePhotoServiceProvider implements ServiceProviderInterface
     // Get a file name
     if (isset($_REQUEST["name"]))
     {
-      $fileName = $_REQUEST["name"];
+      $fileName = preg_replace('#[^A-Za-z0-9-./]#', '', $_REQUEST["name"]);
     }
     elseif (!empty($_FILES))
     {
-      $fileName = $_FILES["file"]["name"];
+      $fileName = preg_replace('#[^A-Za-z0-9-./]#', '', $_FILES["file"]["name"]);
     }
     else
     {
-      $fileName = uniqid("file_");
+      $fileName = preg_replace('#[^A-Za-z0-9-./]#', '', uniqid("file_"));
     }
-
+    
+    // get last id from db
+    $last_id = $this->_model->get_last_id();
+    // get extension
+    $fileName_extn = substr($fileName, strrpos($fileName, '.', -1)+1);
+    // set file name to last id from db
+    $fileName = 'image' . $last_id . '.' . $fileName_extn;
+    
     $filePath = $targetDir . DIRECTORY_SEPARATOR . $fileName;
 
     // Chunking might be enabled
@@ -172,8 +179,7 @@ class LittlePhotoServiceProvider implements ServiceProviderInterface
       {
         die('{
           "jsonrpc" : "2.0",
-          "error" : {"code": 100, "message": "Failed to open temp directory."},
-          "id" : "id"
+          "error" : {"code": 100, "message": "Failed to open temp directory."}
          }');
       }
 
@@ -202,8 +208,7 @@ class LittlePhotoServiceProvider implements ServiceProviderInterface
     {
       die('{
         "jsonrpc" : "2.0",
-        "error" : {"code": 102, "message": "Failed to open output stream."},
-        "id" : "id"
+        "error" : {"code": 102, "message": "Failed to open output stream."}
        }');
     }
 
@@ -213,8 +218,7 @@ class LittlePhotoServiceProvider implements ServiceProviderInterface
       {
         die('{
           "jsonrpc" : "2.0",
-          "error" : {"code": 103, "message": "Failed to move uploaded file."},
-          "id" : "id"
+          "error" : {"code": 103, "message": "Failed to move uploaded file."}
          }');
       }
 
@@ -223,8 +227,7 @@ class LittlePhotoServiceProvider implements ServiceProviderInterface
       {
         die('{
           "jsonrpc" : "2.0",
-          "error" : {"code": 101, "message": "Failed to open input stream."},
-          "id" : "id"
+          "error" : {"code": 101, "message": "Failed to open input stream."}
          }');
       }
     }
@@ -234,8 +237,7 @@ class LittlePhotoServiceProvider implements ServiceProviderInterface
       {
         die('{
           "jsonrpc" : "2.0",
-          "error" : {"code": 101, "message": "Failed to open input stream."},
-          "id" : "id"
+          "error" : {"code": 101, "message": "Failed to open input stream."}
          }');
       }
     }
@@ -259,7 +261,7 @@ class LittlePhotoServiceProvider implements ServiceProviderInterface
     die('{
       "jsonrpc" : "2.0",
       "result" : null,
-      "id" : "id"
+      "id" : 1
     }');
   }
 

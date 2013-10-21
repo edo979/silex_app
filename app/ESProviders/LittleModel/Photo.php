@@ -9,7 +9,7 @@ class Photo extends BaseModel
    * @var type string
    */
   protected $_tableName = 'photos';
-  
+
 //  public function save($file)
 //  {
 //    // get id from database
@@ -17,15 +17,16 @@ class Photo extends BaseModel
 //    // move photo to destination folder and rename
 //    // save path and name to database
 //  }
-  
-  private function get_last_id()
+
+  public function get_last_id()
   {
     // fetch last photo id from database
-  }
-  
-  private function move_photo($file)
-  {
-    // move file and rename
+    $sql = "SELECT id FROM {$this->_tableName} ORDER BY id DESC LIMIT 1";
+    $statement = $this->conn->prepare($sql);
+    $statement->execute();
+    $result = $statement->fetch();
+
+    return (string) $result['id'];
   }
 
 }

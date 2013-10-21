@@ -8,6 +8,49 @@ $(function() {
 });
 
 // Upload and resize image
+function log() {
+  var str = "";
+
+  plupload.each(arguments, function(arg) {
+    var row = "";
+
+    if (typeof(arg) != "string") {
+      plupload.each(arg, function(value, key) {
+        // Convert items in File objects to human readable form
+        if (arg instanceof plupload.File) {
+          // Convert status to human readable
+          switch (value) {
+            case plupload.QUEUED:
+              value = 'QUEUED';
+              break;
+
+            case plupload.UPLOADING:
+              value = 'UPLOADING';
+              break;
+
+            case plupload.FAILED:
+              value = 'FAILED';
+              break;
+
+            case plupload.DONE:
+              value = 'DONE';
+              break;
+          }
+        }
+
+        if (typeof(value) != "function") {
+          row += (row ? ', ' : '') + key + '=' + value;
+        }
+      });
+
+      str += row + " ";
+    } else {
+      str += arg + " ";
+    }
+  });
+
+  console.log(str + "\n");
+}
 // Custom example logic
 var uploader = new plupload.Uploader({
   runtimes: 'html5,html4',
@@ -47,6 +90,11 @@ var uploader = new plupload.Uploader({
     },
     UploadProgress: function(up, file) {
       document.getElementById(file.id).getElementsByTagName('b')[0].innerHTML = '<span>' + file.percent + "%</span>";
+    },
+    FileUploaded: function(up, file, info) {
+      // Called when a file has finished uploading
+      var data = $.parseJSON(info.response);
+      console.log(data.id);
     },
     Error: function(up, err) {
       document.getElementById('console').innerHTML += "\nError #" + err.code + ": " + err.message;
