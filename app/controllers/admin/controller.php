@@ -50,20 +50,21 @@ $admin->get('/articles/new', function (Silex\Application $app)
 // New Article process form
 $admin->post('/articles/new', function (Silex\Application $app, Request $request)
   {
-    $data['title'] = $request->get('title');
-    $data['body'] = $request->get('body');
-
-    $article = $app['model.article']->save($data);
-
-    if ($article)
-    {
-      // Redirect
-      return $app->redirect('/admin/articles');
-    }
-    else
-    {
-      // Show errors
-    }
+      $data = array();
+      $data['title'] = $request->get('title');
+      $data['id'] = $request->get('id');
+      $data['body'] = $request->get('body');
+      
+      if(is_numeric($data['id']) && $data['id'] == 0)
+      {
+        $id = $app['model.article']->save($data);
+        
+        return $app->json(array('id' => $id), 200);
+      }
+      else 
+      {
+        return $app->json(array('error' => 'error'), 400);
+      }
   });
 
 

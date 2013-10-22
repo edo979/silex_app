@@ -11,16 +11,19 @@
     language: "bs",
     menu: 'false',
     plugins: "wordcount save",
-    toolbar: " undo redo | | save cancel | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent |  removeformat",
+    toolbar: " save | undo redo | styleselect | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent |  removeformat",
     save_enablewhendirty: true,
     save_onsavecallback: function() {
-      console.log("Save");
+      ESarticle.saveArticle();
     }
   });
   </script>
 {% endblock %}
 
 {% block main %}
+  
+  <label for="title">Title</label>
+  <input type="text" name="title" class="form-control" id="title" value="{% if article.title is defined %}{{ article.title|e }}{% else %}Input title{% endif %}">
 
   <h2>Menage Images</h2>
 
@@ -39,21 +42,12 @@
 
   <br />
 
-  <form method="post" role="form">
-    <div class="form-group">
-      <label for="title">Title</label>
-      <input type="text" name="title" class="form-control" id="title" value="{% if article.title is defined %}{{ article.title|e }}{% else %}Input title{% endif %}">
-    </div>
-    <div class="form-group">
-      <label for="body">Body</label>
-      <textarea class="form-control" name="body" id="body">
-        {% if article.body is defined %}
-            {{ article.body|e }}
-        {% else %}Input body{% endif %}
-      </textarea>
-    </div>
-    <button type="submit" class="btn btn-default">Submit</button>
-  </form>
+  <textarea name="body" id="body">
+    {% if article.body is defined %}
+        {{ article.body|e }}
+    {% else %}Input body{% endif %}
+  </textarea>
+    
 {% endblock %}
 
 {% block sidebar %}

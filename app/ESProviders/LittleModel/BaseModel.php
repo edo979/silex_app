@@ -103,8 +103,10 @@ abstract class BaseModel
     else
     {
       // Save
-      return $this->conn
+      $this->conn
           ->insert($this->_tableName, $data);
+      
+      return $this->conn->lastInsertId();
     }
   }
 

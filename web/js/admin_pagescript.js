@@ -6,6 +6,7 @@ $(function() {
     }
   };
 });
+
 // Upload and resize image
 // Custom example logic
 $(function() {
@@ -57,8 +58,28 @@ $(function() {
   });
 });
 
-var ES = {
+// Object for menage ajax call
+var ESarticle = {
+  // id of article returned from server
+  articleId: 0,
   showPicture: function(id) {
     console.log(id);
+  },
+  saveArticle: function() {
+    var self = this,
+        title = $(document).find('#title').val(),
+        content = tinymce.activeEditor.getContent();
+    // Check for article ID
+    if(this.articleId == 0){
+      // Post to new
+      $.post( "//webdev.dev/admin/articles/new", { id: this.articleId, title: title, body: content })
+        .done(function( data ) {
+          // get id
+          self.articleId = data.id;
+        }, "json");
+    } else {
+      // Post to edit
+      console.log('edit ' + self.articleId);
+    };
   }
 }; 
