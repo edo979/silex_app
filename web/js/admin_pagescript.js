@@ -33,9 +33,9 @@ $(function() {
   uploader.bind('FilesAdded', function(up, files) {
     $.each(files, function(i, file) {
       $('#filelist').append(
-              '<div id="' + file.id + '">' +
-              file.name + ' (' + plupload.formatSize(file.size) + ') <b></b>' +
-              '</div>');
+        '<div id="' + file.id + '">' +
+        file.name + ' (' + plupload.formatSize(file.size) + ') <b></b>' +
+        '</div>');
     });
     up.refresh(); // Reposition Flash/Silverlight
   });
@@ -44,21 +44,22 @@ $(function() {
   });
   uploader.bind('Error', function(up, err) {
     $('#filelist').append("<div>Error: " + err.code +
-            ", Message: " + err.message +
-            (err.file ? ", File: " + err.file.name : "") +
-            "</div>"
-            );
+      ", Message: " + err.message +
+      (err.file ? ", File: " + err.file.name : "") +
+      "</div>"
+      );
     up.refresh(); // Reposition Flash/Silverlight
   });
   uploader.bind('FileUploaded', function(up, file, info) {
     $('#' + file.id + " b").html("100%");
     var data = $.parseJSON(info.response);
     // show picture
-    ES.showPicture(data.id);
+    ESarticle.showPicture(data.id);
   });
 });
 
 // Object for menage ajax call
+
 var ESarticle = {
   // id of article returned from server
   articleId: 0,
@@ -67,22 +68,36 @@ var ESarticle = {
   },
   saveArticle: function() {
     var self = this,
-        title = $(document).find('#title').val(),
-        content = tinymce.activeEditor.getContent();
+      title = $(document).find('#title').val(),
+      content = tinymce.activeEditor.getContent();
     // Check for article ID from url for new or edit method
-    if(this.articleId == 0){
+    if (this.getArticleId() == 0) {
       // Post to new
-      $.post( "//webdev.dev/admin/articles/new", { id: this.articleId, title: title, body: content })
-        .done(function( data ) {
+      $.post("//webdev.dev/admin/articles/new", {id: this.articleId, title: title, body: content})
+        .done(function(data) {
           // set article id
           self.articleId = data.id;
         }, "json");
     } else {
       // Post to edit
       $.post(
-          "//webdev.dev/admin/article/"+this.articleId,
-          { id: this.articleId, title: title, body: content }
+        "//webdev.dev/admin/article/" + this.articleId,
+        {id: this.articleId, title: title, body: content}
       );
-    };
+    }
+  },
+  getArticleId: function() {
+    if(this.articleId != 0){
+      return this.articleId;
+    }
+    
+    var url = document.location.pathname,
+        id = url.substr(url.lastIndexOf('/') + 1);
+
+    if(!parseInt(id))
+    {
+      return this.articleId = 0;
+    }
+    return this.articleId = id;
   }
-}; 
+};
