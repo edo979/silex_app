@@ -51,8 +51,9 @@ $admin->get('/articles/new', function (Silex\Application $app)
 $admin->post('/articles/new', function (Silex\Application $app, Request $request)
   {
       $data = array();
-      $data['title'] = $request->get('title');
+      
       $data['id'] = $request->get('id');
+      $data['title'] = $request->get('title');
       $data['body'] = $request->get('body');
       
       if(is_numeric($data['id']) && $data['id'] == 0)
@@ -88,20 +89,23 @@ $admin->post('/article/{id}', function (Silex\Application $app, Request $request
   {
     $data = array();
 
+    $data['id'] = $request->get('id');
     $data['title'] = $request->get('title');
     $data['body'] = $request->get('body');
-
-    $article = $app['model.article']->save($data, $id);
-
-    if ($article)
+    
+    // Ajax request
+    if(is_numeric($data['id']) && ($data['id'] == 0 || $data['id'] == $id))
     {
-      // Redirect
-      return $app->redirect('/admin/articles');
+      $result = $app['model.article']->save($data, $id);
+      
+      if($result)
+      {
+        return $app->json(array('id' => $data['id']), 200);
+      }
     }
-    else
-    {
-      // Show errors
-    }
+
+    return $app->json(array('error' => 'error'), 400);
+
   });
 
 

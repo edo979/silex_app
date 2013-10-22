@@ -69,17 +69,20 @@ var ESarticle = {
     var self = this,
         title = $(document).find('#title').val(),
         content = tinymce.activeEditor.getContent();
-    // Check for article ID
+    // Check for article ID from url for new or edit method
     if(this.articleId == 0){
       // Post to new
       $.post( "//webdev.dev/admin/articles/new", { id: this.articleId, title: title, body: content })
         .done(function( data ) {
-          // get id
+          // set article id
           self.articleId = data.id;
         }, "json");
     } else {
       // Post to edit
-      console.log('edit ' + self.articleId);
+      $.post(
+          "//webdev.dev/admin/article/"+this.articleId,
+          { id: this.articleId, title: title, body: content }
+      );
     };
   }
 }; 
