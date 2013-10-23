@@ -23,7 +23,7 @@ $(function() {
     resize: {width: 800, height: 600, quality: 90, crop: false}
   });
   uploader.bind('Init', function(up, params) {
-    $('#filelist').html("<div>Current runtime: " + params.runtime + "</div>");
+    $('#filelist').html("Add photo fot upload");
   });
   $('#uploadfiles').click(function(e) {
     uploader.start();
