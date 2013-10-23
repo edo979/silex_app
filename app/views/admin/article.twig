@@ -1,25 +1,5 @@
 {% extends 'admin/layout.twig' %}
 
-{% block headerScripts %}
-  {{ parent() }}
-<link href="/css/myCSS.css" rel="stylesheet" media="screen">
-<script type="text/javascript" src="/js/tinymce/tinymce.min.js"></script>
-<script type="text/javascript">
-  tinymce.init({
-    height: "350",
-    selector: "textarea",
-    language: "bs",
-    menu: 'false',
-    plugins: "wordcount save",
-    toolbar: " save | undo redo | styleselect | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent |  removeformat",
-    save_enablewhendirty: true,
-    save_onsavecallback: function() {
-      ESarticle.saveArticle();
-    }
-  });
-  </script>
-{% endblock %}
-
 {% block main %}
   
   <label for="title">Title</label>
@@ -42,7 +22,7 @@
 
   <br />
 
-  <textarea name="body" id="body">
+  <textarea class="tinymce" name="body" id="body">
     {% if article.body is defined %}
         {{ article.body|e }}
     {% else %}Input body{% endif %}
@@ -56,10 +36,7 @@
 {% endblock %}
 
   {%block javascript%}
-  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-  <script src="/js/jquery.js"></script>
-  <!-- Include all compiled plugins (below), or include individual files as needed -->
-  <script src="/js/bootstrap.min.js"></script>
+  {{ parent() }}
   <!-- Plupload script for menage images upload -->
   <script src="/js/plupload/plupload.full.min.js"></script>
   <!-- MY script -->

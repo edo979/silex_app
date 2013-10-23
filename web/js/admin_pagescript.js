@@ -1,5 +1,22 @@
 // tinyMCE
 $(function() {
+  $('textarea.tinymce').tinymce({
+    script_url: '/js/tinymce/tinymce.min.js',
+    theme: "modern",
+    height: "350",
+    selector: "textarea",
+    language: "bs",
+    menu: 'false',
+    plugins: "wordcount save image",
+    toolbar: " save | undo redo | styleselect | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent |  removeformat image",
+    save_enablewhendirty: true,
+    save_onsavecallback: function() {
+      ESarticle.saveArticle();
+    }
+  });
+  
+  $('input#mce_60-inp').hide();
+  
   var addImage = {
     getWin: function() {
       return (!window.frameElement && window.dialogArguments) || opener || parent || top;
@@ -26,7 +43,8 @@ $(function() {
     $('#filelist').html("Add photo fot upload");
   });
   $('#uploadfiles').click(function(e) {
-    uploader.start();
+    //uploader.start();
+    console.log('uploading');
     e.preventDefault();
   });
   uploader.init();
@@ -36,6 +54,8 @@ $(function() {
         '<div id="' + file.id + '">' +
         file.name + ' (' + plupload.formatSize(file.size) + ') <b></b>' +
         '</div>');
+      console.log(file);
+      document.EStest = file;
     });
     up.refresh(); // Reposition Flash/Silverlight
   });
@@ -87,14 +107,14 @@ var ESarticle = {
     }
   },
   getArticleId: function() {
-    if(this.articleId != 0){
+    if (this.articleId != 0) {
       return this.articleId;
     }
-    
-    var url = document.location.pathname,
-        id = url.substr(url.lastIndexOf('/') + 1);
 
-    if(!parseInt(id))
+    var url = document.location.pathname,
+      id = url.substr(url.lastIndexOf('/') + 1);
+
+    if (!parseInt(id))
     {
       return this.articleId = 0;
     }
