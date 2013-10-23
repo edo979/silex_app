@@ -35,7 +35,7 @@ $admin->get('/articles', function (Silex\Application $app)
 // New Article show form
 $admin->get('/articles/new', function (Silex\Application $app)
 {
-  $pageId = 'newArticle';
+  $pageId = 'article';
 
   // Empty values for form
   $article = array('title' => '', 'body' => '');

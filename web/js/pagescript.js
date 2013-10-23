@@ -4,8 +4,13 @@ $(function() {
       page = '', pageUp = '';
       
   if(url.length == 1){
+    // Active class for home meny
     page = 'home'; pageUp = 'Home';
-  }else {
+  } else if(url.indexOf("/articles/new") != -1 || url.indexOf("/article/") != -1) {
+    // Active class for articles meny
+    page = 'article'; pageUp = 'Articles';
+  } else {
+    // Active class for all other
     page = url.substr(url.lastIndexOf('/') + 1);
     pageUp = page.charAt(0).toUpperCase() + page.slice(1);
   }
