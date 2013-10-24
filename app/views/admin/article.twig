@@ -6,21 +6,6 @@
   <label for="title">Title</label>
   <input type="text" name="title" class="form-control" id="title" value="{% if article.title is defined %}{{ article.title|e }}{% else %}Input title{% endif %}">
 
-  <h2>Menage Images</h2>
-
-  <div id="container">
-    <div id="filelist">Your browser doesn't have Flash, Silverlight or HTML5 support.</div>
-    <br />
-    <span class="btn btn-primary fileinput-button" id="pickfiles">
-      <i class="glyphicon glyphicon-plus"></i>
-      <span>[Select files]</span>
-    </span>
-    <span class="btn btn-success fileinput-button" id="uploadfiles">
-      <i class="glyphicon glyphicon-save"></i>
-      <span>[Upload files]</span>
-    </span>
-  </div>
-
   <br />
 
   <textarea class="tinymce" name="body" id="body">

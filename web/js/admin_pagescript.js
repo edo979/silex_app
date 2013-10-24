@@ -49,7 +49,7 @@ $(function() {
     resize: {width: 800, height: 600, quality: 90, crop: false}
   });
   uploader.bind('Init', function(up, params) {
-    $('#filelist').html("Add photo fot upload");
+    $('#filelist').html("");
   });
   $('#uploadfiles').click(function(e) {
     //uploader.start();
