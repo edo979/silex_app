@@ -1,7 +1,8 @@
 {% extends 'admin/layout.twig' %}
 
+
+
 {% block main %}
-  
   <label for="title">Title</label>
   <input type="text" name="title" class="form-control" id="title" value="{% if article.title is defined %}{{ article.title|e }}{% else %}Input title{% endif %}">
 
@@ -27,19 +28,24 @@
         {{ article.body|e }}
     {% else %}Input body{% endif %}
   </textarea>
-    
+  
+  {% include 'admin/_modalAddPhoto.twig' %}
 {% endblock %}
 
+  
+  
 {% block sidebar %}
   <h2>Main column</h2>
   <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi, quos, molestiae, perspiciatis fugiat facilis rem dicta eum minus fugit culpa nobis autem. Beatae minima nihil doloremque accusamus explicabo voluptas nemo?</p>
 {% endblock %}
-
-  {%block javascript%}
+  
+  
+  
+{%block javascript%}
   {{ parent() }}
   <!-- Plupload script for menage images upload -->
   <script src="/js/plupload/plupload.full.min.js"></script>
   <!-- MY script -->
   <script src="/js/pagescript.js"></script>
   <script src="/js/admin_pagescript.js"></script>
-  {% endblock %}
+{% endblock %}

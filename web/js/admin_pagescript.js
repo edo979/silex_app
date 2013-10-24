@@ -7,16 +7,25 @@ $(function() {
     selector: "textarea",
     language: "bs",
     menu: 'false',
-    plugins: "wordcount save image",
+    plugins: "wordcount save",
     toolbar: " save | undo redo | styleselect | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent |  removeformat image",
     save_enablewhendirty: true,
     save_onsavecallback: function() {
       ESarticle.saveArticle();
+    },
+    theme_advanced_buttons1: 'image',
+    setup: function(ed) {
+      // Register example button
+      ed.addButton('image', {
+        title: 'add image',
+        onclick: function() {
+          //ed.windowManager.alert('Hello world!! Selection: ' + ed.selection.getContent({format: 'text'}));
+          $('#addPhoto').modal();
+        }
+      });
     }
   });
-  
-  $('input#mce_60-inp').hide();
-  
+
   var addImage = {
     getWin: function() {
       return (!window.frameElement && window.dialogArguments) || opener || parent || top;
