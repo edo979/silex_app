@@ -60,14 +60,15 @@ $(function() {
   uploader.init();
   uploader.bind('FilesAdded', function(up, files) {
     $.each(files, function(i, file) {
-      if(uploader.files.length!=1){uploader.removeFile(file);}
+      if(uploader.files.length!=1){
+        console.log(files);
+        up.splice(0,1);
+      }
       $('#filelist').empty();
       $('#filelist').append(
         '<div id="' + file.id + '">' +
         file.name + ' (' + plupload.formatSize(file.size) + ') <b></b>' +
         '</div>');
-      console.log(files);
-      document.EStest = file;
     });
     up.refresh(); // Reposition Flash/Silverlight
   });
@@ -83,18 +84,26 @@ $(function() {
     up.refresh(); // Reposition Flash/Silverlight
   });
   uploader.bind('FileUploaded', function(up, file, info) {
-    //$('#' + file.id + " b").html("100%");
-    // show progres
-    // clear uploade file
-    up.removeFile(file);
+    up.splice();
+    up.refresh();
     $('#filelist').empty();
-    // when done close modal
     $('#addPhoto').modal('hide');
-    
+
     var data = $.parseJSON(info.response);
     // show picture
     ESarticle.showPicture(data.id);
   });
+
+  $('#addPhoto').on('hidden.bs.modal', function() {
+    uploader.splice();
+    uploader.refresh();
+    $('#filelist').empty();
+  });
+});
+
+// My Listeners
+$(function() {
+
 });
 
 // Object for menage ajax call
@@ -138,5 +147,7 @@ var ESarticle = {
       return this.articleId = 0;
     }
     return this.articleId = id;
-  }
+  },
 };
+
+// Event
