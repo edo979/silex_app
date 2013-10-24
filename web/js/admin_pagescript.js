@@ -40,6 +40,7 @@ $(function() {
     runtimes: 'html5, gears,flash,silverlight,browserplus',
     browse_button: 'pickfiles',
     container: 'container',
+    multi_selection: false,
     max_file_size: '3mb',
     url: '//webdev.dev/admin/photos/new',
     filters: [
@@ -52,18 +53,20 @@ $(function() {
     $('#filelist').html("");
   });
   $('#uploadfiles').click(function(e) {
-    //uploader.start();
+    uploader.start();
     console.log('uploading');
     e.preventDefault();
   });
   uploader.init();
   uploader.bind('FilesAdded', function(up, files) {
     $.each(files, function(i, file) {
+      if(uploader.files.length!=1){uploader.removeFile(file);}
+      $('#filelist').empty();
       $('#filelist').append(
         '<div id="' + file.id + '">' +
         file.name + ' (' + plupload.formatSize(file.size) + ') <b></b>' +
         '</div>');
-      console.log(file);
+      console.log(files);
       document.EStest = file;
     });
     up.refresh(); // Reposition Flash/Silverlight
@@ -80,7 +83,14 @@ $(function() {
     up.refresh(); // Reposition Flash/Silverlight
   });
   uploader.bind('FileUploaded', function(up, file, info) {
-    $('#' + file.id + " b").html("100%");
+    //$('#' + file.id + " b").html("100%");
+    // show progres
+    // clear uploade file
+    up.removeFile(file);
+    $('#filelist').empty();
+    // when done close modal
+    $('#addPhoto').modal('hide');
+    
     var data = $.parseJSON(info.response);
     // show picture
     ESarticle.showPicture(data.id);
