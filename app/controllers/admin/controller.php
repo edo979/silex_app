@@ -53,14 +53,23 @@ $admin->post('/articles/new', function (Silex\Application $app, Request $request
   $data = array();
 
   $data['id'] = $request->get('id');
-  $data['title'] = $request->get('title');
-  $data['body'] = $request->get('body');
 
+  // Get article content
   if (is_numeric($data['id']) && $data['id'] == 0)
   {
+    $data['title'] = $request->get('title');
+    $data['body'] = $request->get('body');
+    
+    // save image id
+    $image_id = $request->get('imageId');
+    if ($image_id > 0)
+    {
+      $data['image_ids'] = $image_id;
+    }
+
     $id = $app['model.article']->save($data);
 
-    return $app->json(array('id' => $id), 200);
+    return $app->json(array('articleId' => $id), 200);
   }
   else
   {
@@ -87,15 +96,13 @@ $admin->get('/article/{id}', function (Silex\Application $app, $id)
 // Article Edit process form
 $admin->post('/article/{id}', function (Silex\Application $app, Request $request, $id)
 {
-  $data = array();
-
-  $data['id'] = $request->get('id');
-  $data['title'] = $request->get('title');
-  $data['body'] = $request->get('body');
-
-  // Ajax request
-  if (is_numeric($data['id']) && ($data['id'] == 0 || $data['id'] == $id))
+  if (is_numeric($id))
   {
+    $data = array();
+
+    $data['title'] = $request->get('title');
+    $data['body'] = $request->get('body');
+
     $result = $app['model.article']->save($data, $id);
 
     if ($result)
@@ -131,36 +138,26 @@ $admin->get('/article/delete/{id}', function (Silex\Application $app, $id)
 // New Photo
 $admin->post('/photos/new', function (Silex\Application $app)
 {
-  $app->register(new ESProviders\LittlePhotoServiceProvider(), array(
-      'photoHandler.temp_file' => $_FILES["file"],
-      'photoHandler.errors'    => array()
-  ));
-
-  $article_id = $app['model.article']->get_last_id();
-
-  $fileName = $app['photoHandler'];
-
-  if (!empty($fileName))
+  if (!empty($_FILES["file"]))
   {
-    $data = array(
-        'filename'    => $fileName,
-        'article_ids' => $article_id
-    );
-
-    // save to db    
-    $app['model.photo']->save($data);
-    // get id from saved image
-    $id = $app['model.photo']->get_last_id();
-
-    // Return JSON with inserted image id
-    die('{
-        "jsonrpc" : "2.0",
-        "result" : null,
-        "id" : ' . $id . '
-      }');
+    $app->register(new ESProviders\LittlePhotoServiceProvider(), array(
+        'photoHandler.temp_file' => $_FILES["file"],
+        'photoHandler.errors'    => array(),
+        'photoHandler.imageId'   => 0
+    ));
+    if ($app['photoHandler'])
+    {
+      $id = $app['photoHandler.imageId'];
+      return $app->json(array('imageId' => $id), 200);
+    }
+  }
+  else
+  {
+    return $app->json(array('error' => 'error'), 400);
   }
 });
-// New Photo
+
+// Get Photo
 $admin->get('/photos/article/{id}', function (Silex\Application $app, $id)
 {
   

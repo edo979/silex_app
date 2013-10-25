@@ -91,7 +91,7 @@ $(function() {
 
     var data = $.parseJSON(info.response);
     // show picture
-    ESarticle.showPicture(data.id);
+    ESarticle.showPicture(data.imageId);
   });
 
   $('#addPhoto').on('hidden.bs.modal', function() {
@@ -111,7 +111,13 @@ $(function() {
 var ESarticle = {
   // id of article returned from server
   articleId: 0,
+  imageId: 0,
   showPicture: function(id) {
+    this.imageId = id;
+    // save article
+    this.saveArticle();
+    // show image in editor
+    
     console.log(id);
   },
   saveArticle: function() {
@@ -121,7 +127,12 @@ var ESarticle = {
     // Check for article ID from url for new or edit method
     if (this.getArticleId() == 0) {
       // Post to new
-      $.post("//webdev.dev/admin/articles/new", {id: this.articleId, title: title, body: content})
+      $.post("//webdev.dev/admin/articles/new", {
+        id: this.articleId,
+        title: title,
+        body: content,
+        imageId: this.imageId
+      })
         .done(function(data) {
           // set article id
           self.articleId = data.id;
@@ -149,5 +160,3 @@ var ESarticle = {
     return this.articleId = id;
   },
 };
-
-// Event

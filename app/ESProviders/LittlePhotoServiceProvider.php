@@ -33,25 +33,37 @@ class LittlePhotoServiceProvider implements ServiceProviderInterface
     $this->_model = $app['model.photo'];
 
     $app['photoHandler'] = function() use($app)
+    {
+      $file = $app['photoHandler.temp_file'];
+
+      $validate = $this->validate_file($file);
+      $app['photoHandler.errors'] = $this->errors;
+
+      if ($validate)
       {
-        $file = $app['photoHandler.temp_file'];
+        // Set image attribute from upload file.
+//          $app['photoHandler.image'] = array(
+//              'filename'  => basename($file['name']),
+//              'temp_path' => $file['tmp_name']
+//          );
 
-        $validate = $this->validate_file($file);
-        $app['photoHandler.errors'] = $this->errors;
+        $imageName = $this->move_image($file);
 
-        if ($validate)
+        // Save image to database
+        $image_id = $this->saveImage($imageName);
+        // save successuful
+        if($image_id > 0)
         {
-          // Set image attribute from upload file.
-          $app['photoHandler.image'] = array(
-              'filename'  => basename($file['name']),
-              'temp_path' => $file['tmp_name']
-          );
-
-          return $this->move_image($file);
+          $app['photoHandler.imageId'] = $image_id ;
+          
+          return TRUE;
         }
-
+        
         return FALSE;
-      };
+      }
+
+      return FALSE;
+    };
   }
 
   // Validate file
@@ -157,16 +169,16 @@ class LittlePhotoServiceProvider implements ServiceProviderInterface
     {
       $fileName = preg_replace('#[^A-Za-z0-9-./]#', '', uniqid("file_"));
     }
-    
+
     // get last id from db
     $last_id = $this->_model->get_last_id();
     $new_id = (int) $last_id + 1;
     $new_id = (string) $new_id;
     // get extension
-    $fileName_extn = substr($fileName, strrpos($fileName, '.')+1);
+    $fileName_extn = substr($fileName, strrpos($fileName, '.') + 1);
     // set file name to last id from db
     $fileName = 'image' . $new_id . '.' . $fileName_extn;
-    
+
     $filePath = $targetDir . DIRECTORY_SEPARATOR . $fileName;
 
     // Chunking might be enabled
@@ -259,8 +271,19 @@ class LittlePhotoServiceProvider implements ServiceProviderInterface
       rename("{$filePath}.part", $filePath);
     }
 
-    // Return Success JSON-RPC response
     return $fileName;
+  }
+
+  private function saveImage($imageName)
+  {
+    $data = array(
+        'filename' => $imageName
+    );
+
+    // save image to db    
+    $photo_id = $this->_model->save($data);
+    
+    return (int) $photo_id;
   }
 
 }
