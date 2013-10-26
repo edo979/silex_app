@@ -59,13 +59,6 @@ $admin->post('/articles/new', function (Silex\Application $app, Request $request
   {
     $data['title'] = $request->get('title');
     $data['body'] = $request->get('body');
-    
-    // save image id
-    $image_id = $request->get('imageId');
-    if ($image_id > 0)
-    {
-      $data['image_ids'] = $image_id;
-    }
 
     $id = $app['model.article']->save($data);
 
@@ -158,9 +151,21 @@ $admin->post('/photos/new', function (Silex\Application $app)
 });
 
 // Get Photo
-$admin->get('/photos/article/{id}', function (Silex\Application $app, $id)
+$admin->get('/photos/{id}', function (Silex\Application $app, $id)
 {
-  
+  $image = $app['model.photo']->get($id);
+
+  // create response
+  $path = '../app/uploads/' . $image['filename'];
+  if (!file_exists($path))
+  {
+    $app->abort(404);
+  }
+  return $app->sendFile($path, 200, array(
+        'Content-Type' => 'image/png, image/jpg, image/gif',
+        'Pragma'       => 'public'
+      )
+  );
 });
 
 return $admin;

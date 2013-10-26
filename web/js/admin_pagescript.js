@@ -19,18 +19,11 @@ $(function() {
       ed.addButton('image', {
         title: 'add image',
         onclick: function() {
-          //ed.windowManager.alert('Hello world!! Selection: ' + ed.selection.getContent({format: 'text'}));
           $('#addPhoto').modal();
         }
       });
     }
   });
-
-  var addImage = {
-    getWin: function() {
-      return (!window.frameElement && window.dialogArguments) || opener || parent || top;
-    }
-  };
 });
 
 // Upload and resize image
@@ -88,7 +81,7 @@ $(function() {
     up.refresh();
     $('#filelist').empty();
     $('#addPhoto').modal('hide');
-
+    // get image id from response
     var data = $.parseJSON(info.response);
     // show picture
     ESarticle.showPicture(data.imageId);
@@ -107,18 +100,16 @@ $(function() {
 });
 
 // Object for menage ajax call
-
 var ESarticle = {
   // id of article returned from server
   articleId: 0,
-  imageId: 0,
   showPicture: function(id) {
-    this.imageId = id;
+    // show image in editor
+    tinymce.EditorManager
+      .activeEditor
+      .insertContent("<img width='250px' src='//webdev.dev/admin/photos/" + id +"'>");
     // save article
     this.saveArticle();
-    // show image in editor
-    
-    console.log(id);
   },
   saveArticle: function() {
     var self = this,
@@ -128,20 +119,22 @@ var ESarticle = {
     if (this.getArticleId() == 0) {
       // Post to new
       $.post("//webdev.dev/admin/articles/new", {
-        id: this.articleId,
+        id: self.articleId,
         title: title,
-        body: content,
-        imageId: this.imageId
+        body: content
       })
         .done(function(data) {
           // set article id
-          self.articleId = data.id;
+          self.articleId = data.articleId;
         }, "json");
     } else {
       // Post to edit
       $.post(
-        "//webdev.dev/admin/article/" + this.articleId,
-        {id: this.articleId, title: title, body: content}
+        "//webdev.dev/admin/article/" + this.articleId, {
+          id: self.articleId,
+          title: title,
+          body: content
+        }
       );
     }
   },
@@ -158,5 +151,5 @@ var ESarticle = {
       return this.articleId = 0;
     }
     return this.articleId = id;
-  },
+  }
 };
