@@ -153,3 +153,10 @@ var ESarticle = {
     return this.articleId = id;
   }
 };
+
+// Date picker
+$('#datepicker.date').datepicker({
+    format: "yyyy-mm-dd",
+    weekStart: 1,
+    autoclose: true
+});
