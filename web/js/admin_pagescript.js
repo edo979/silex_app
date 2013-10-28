@@ -96,7 +96,9 @@ $(function() {
 
 // My Listeners
 $(function() {
-
+  $('#savePublishedArticle').on('click', function() {
+    ESarticle.saveArticle();
+  });
 });
 
 // Object for menage ajax call
@@ -123,7 +125,8 @@ var ESarticle = {
         id: self.articleId,
         publishDate: publishDate,
         title: title,
-        body: content
+        body: content,
+        publish: self.getPublishState()
       })
         .done(function(data) {
           // set article id
@@ -136,7 +139,8 @@ var ESarticle = {
           id: self.articleId,
           publishDate: publishDate,
           title: title,
-          body: content
+          body: content,
+          publish: self.getPublishState()
         }
       );
     }
@@ -154,11 +158,19 @@ var ESarticle = {
       return this.articleId = 0;
     }
     return this.articleId = id;
+  },
+  getPublishState: function() {
+    var selectValue = $('input:radio:checked').val();
+    if (selectValue && selectValue == 'publish'){
+      return 1;
+    }
+    return 0;
   }
 };
 
 // Date picker
 $(function() {
+  // set bs language
   $.fn.datepicker.dates['bs'] = {
     days: ["Nedjelja", "Ponedjeljak", "Utorak", "Srijeda", "Četvrtak", "Petak", "Subota", "Nedjelja"],
     daysShort: ["Ned", "Pon", "Uto", "Sri", "Čet", "Pet", "Sub", "Ned"],
@@ -168,10 +180,12 @@ $(function() {
     today: "Danas",
     clear: "Očisti"
   };
+  // Call datepicker
   $('#datepicker.date').datepicker({
     format: "yyyy-mm-dd",
     weekStart: 1,
     autoclose: true,
-    language: 'bs'
+    language: 'bs',
+    todayHighlight: true
   });
 });

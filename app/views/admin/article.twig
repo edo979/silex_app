@@ -38,11 +38,23 @@
 
       </div>
       <label class="radio-inline">
-        <input type="radio" name="publish" id="published" value="publihs" checked> Publish
+        <input type="radio" name="publish" value="publish"
+          {% if article.publish == '1' %}
+            checked="checked"
+          {% endif %}
+         > Publish
       </label>
       <label class="radio-inline">
-        <input type="radio" name="publish" id="not-published" value="hide"> Hide
+        <input type="radio" name="publish" value="hide"
+          {% if article.publish == '0' %}
+            checked="checked"
+          {% endif %}
+         > Hide
       </label>
+      <button id="savePublishedArticle" type="submit" class="btn btn-primary btn-sm pull-right">
+        <span class="glyphicon glyphicon-floppy-disk"></span>
+         Save
+      </button>
     </div>
   </div><!-- end Publish date-->
 {% endblock %}

@@ -59,6 +59,7 @@ $admin->post('/articles/new', function (Silex\Application $app, Request $request
   {
     $data['title'] = $request->get('title');
     $data['body'] = $request->get('body');
+    $data['publish'] = $request->get('publish');
     $data['pubdate'] = $request->get('publishDate');
     
     // TODO: Validator
@@ -98,6 +99,7 @@ $admin->post('/article/{id}', function (Silex\Application $app, Request $request
 
     $data['title'] = $request->get('title');
     $data['body'] = $request->get('body');
+    $data['publish'] = $request->get('publish');
     $data['pubdate'] = $request->get('publishDate');
     
     // TODO: Validator
