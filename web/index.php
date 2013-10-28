@@ -2,6 +2,6 @@
 
 /** @var $app \Silex\Application */
 $app = require __DIR__.'/../app/bootstrap.php';
-require __DIR__.'/../app/controllers/frontControllers.php';
+require __DIR__.'/../app/controllers/frontController.php';
 
 $app->run();

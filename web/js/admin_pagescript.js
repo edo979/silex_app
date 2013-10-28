@@ -7,6 +7,7 @@ $(function() {
     selector: "textarea",
     language: "bs",
     menu: 'false',
+    content_css : '/css/bootstrap.min.css',
     plugins: "wordcount save",
     toolbar: " save | undo redo | styleselect | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent |  removeformat image",
     save_enablewhendirty: true,
@@ -109,7 +110,7 @@ var ESarticle = {
     // show image in editor
     tinymce.EditorManager
       .activeEditor
-      .insertContent("<img width='250px' src='//webdev.dev/admin/photos/" + id + "'>");
+      .insertContent("<img width='200px' src='//webdev.dev/photos/" + id + "'>");
     // save article
     this.saveArticle();
   },

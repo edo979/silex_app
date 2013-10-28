@@ -1,8 +1,15 @@
 {% extends 'layout.twig' %}
 
 {% block main %}
-<h2>Main column</h2>
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi, quos, molestiae, perspiciatis fugiat facilis rem dicta eum minus fugit culpa nobis autem. Beatae minima nihil doloremque accusamus explicabo voluptas nemo?</p>
+  {% for article in articles %}
+    <article>
+      <div class="thumbnail">
+        <div class="caption">
+           {{ article.body|raw }}
+        </div>
+      </div>
+    </article>
+  {% endfor %}
 {% endblock %}
 
 {% block sidebar %}
