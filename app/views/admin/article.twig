@@ -19,6 +19,21 @@
   
   
 {% block sidebar %}
+  <!-- Server info -->
+  <div id="panelServerInfo" class="panel panel-info">
+    <div class="panel-heading">Server info<div class="pull-right"></div></div>
+    <div class="panel-body">
+      <p>Last modified date: <span>
+        {% if article.modified is defined %}
+          {{ article.modified|e|date("d.m.Y. H:i:s") }}
+        {% else %}
+          Article not saved
+        {% endif %}
+        </span>
+      </p>
+    </div>
+  </div><!-- end Server info -->
+  
   <!-- Article name -->
   <div class="panel panel-default">
     <div class="panel-heading">Article name</div>
@@ -33,7 +48,13 @@
     <div class="panel-heading">Publish article</div>
     <div class="panel-body">
       <div class="form-group">
-        <input type="text" id="datepicker" name="date" class="date form-control" value="{% if article.pubdate is defined %}{{ article.pubdate|e }}{% else %}Select date{% endif %}">
+        <input type="text" id="datepicker" name="date" class="date form-control"
+          {% if article.pubdate is defined %}
+            value="{{ article.pubdate|e }}"
+          {% else %}
+            value="{{ article.pubdate|e }}"
+          {% endif %}
+         >
         <span class="help-block">Set date for publishing article.</span>
 
       </div>

@@ -131,7 +131,13 @@ var ESarticle = {
         .done(function(data) {
           // set article id
           self.articleId = data.articleId;
-        }, "json");
+          var result = true;
+          self.serverInfo(result, data)
+        }, 'json')
+        .fail(function(data) {
+          var result = false;
+          self.serverInfo(result, data)
+        }, 'json');
     } else {
       // Post to edit
       $.post(
@@ -141,8 +147,15 @@ var ESarticle = {
           title: title,
           body: content,
           publish: self.getPublishState()
-        }
-      );
+        })
+        .done(function(data) {
+          var result = true;
+          self.serverInfo(result, data)
+        }, 'json')
+        .fail(function(data) {
+          var result = false;
+          self.serverInfo(result, data)
+        }, 'json');
     }
   },
   getArticleId: function() {
@@ -161,10 +174,34 @@ var ESarticle = {
   },
   getPublishState: function() {
     var selectValue = $('input:radio:checked').val();
-    if (selectValue && selectValue == 'publish'){
+    if (selectValue && selectValue == 'publish') {
       return 1;
     }
     return 0;
+  },
+  serverInfo: function(serverStatus, data) {
+    var panel = $(document).find('#panelServerInfo'),
+      label = panel.find('.panel-heading').find('div').hide();
+    if (serverStatus) {
+      // Set class and text
+      panel.removeClass()
+        .addClass('panel panel-success')
+        .find('.panel-body').find('span').text(data.modified);
+      // add label and animate
+      label.empty().stop().append("<span class='label label-success'>Spremljeno</span>")
+        .fadeToggle(400, function() {
+          var $this = $(this);
+          // Wait 2s and remove label
+          setTimeout(
+            function()
+            {
+              $this.fadeToggle(400);
+            }, 2000);
+        });
+    } else {
+      $('#panelServerInfo').removeClass()
+        .addClass('panel panel-danger');
+    }
   }
 };
 

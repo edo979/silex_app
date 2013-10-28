@@ -38,7 +38,7 @@ $admin->get('/articles/new', function (Silex\Application $app)
   $pageId = 'article';
 
   // Empty values for form
-  $article = array('title' => '', 'body' => '', 'publishDate' => '');
+  $article = array('title' => '', 'body' => '', 'publish' => '1', 'pubdate' => date("Y-m-d"));
 
   return $app['twig']->render('admin/article.twig', array(
         'pageId'  => $pageId,
@@ -66,7 +66,7 @@ $admin->post('/articles/new', function (Silex\Application $app, Request $request
 
     $id = $app['model.article']->save($data);
 
-    return $app->json(array('articleId' => $id), 200);
+    return $app->json(array('articleId' => $id, 'modified' => date("d.m.Y H:i:s")), 200);
   }
   else
   {
@@ -108,7 +108,13 @@ $admin->post('/article/{id}', function (Silex\Application $app, Request $request
 
     if ($result)
     {
-      return $app->json(array('id' => $data['id']), 200);
+      // Format date
+      $date = new DateTime($result['modified']);
+
+      return $app->json(
+        array('id' => $id,
+          'modified' => $date->format('d.m.Y H:i:s')
+        ), 200);
     }
   }
 
