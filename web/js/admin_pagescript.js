@@ -53,9 +53,9 @@ $(function() {
   uploader.init();
   uploader.bind('FilesAdded', function(up, files) {
     $.each(files, function(i, file) {
-      if(uploader.files.length!=1){
+      if (uploader.files.length != 1) {
         console.log(files);
-        up.splice(0,1);
+        up.splice(0, 1);
       }
       $('#filelist').empty();
       $('#filelist').append(
@@ -107,19 +107,21 @@ var ESarticle = {
     // show image in editor
     tinymce.EditorManager
       .activeEditor
-      .insertContent("<img width='250px' src='//webdev.dev/admin/photos/" + id +"'>");
+      .insertContent("<img width='250px' src='//webdev.dev/admin/photos/" + id + "'>");
     // save article
     this.saveArticle();
   },
   saveArticle: function() {
     var self = this,
       title = $(document).find('#title').val(),
+      publishDate = $(document).find('#datepicker.date').val(),
       content = tinymce.activeEditor.getContent();
     // Check for article ID from url for new or edit method
     if (this.getArticleId() == 0) {
       // Post to new
       $.post("//webdev.dev/admin/articles/new", {
         id: self.articleId,
+        publishDate: publishDate,
         title: title,
         body: content
       })
@@ -132,6 +134,7 @@ var ESarticle = {
       $.post(
         "//webdev.dev/admin/article/" + this.articleId, {
           id: self.articleId,
+          publishDate: publishDate,
           title: title,
           body: content
         }
@@ -155,8 +158,20 @@ var ESarticle = {
 };
 
 // Date picker
-$('#datepicker.date').datepicker({
+$(function() {
+  $.fn.datepicker.dates['bs'] = {
+    days: ["Nedjelja", "Ponedjeljak", "Utorak", "Srijeda", "Četvrtak", "Petak", "Subota", "Nedjelja"],
+    daysShort: ["Ned", "Pon", "Uto", "Sri", "Čet", "Pet", "Sub", "Ned"],
+    daysMin: ["Ne", "Po", "Ut", "Sr", "Če", "Pe", "Su", "Ne"],
+    months: ["Januar", "Februar", "Mart", "April", "Maj", "Juni", "Juli", "Avgust", "Septembar", "Oktobar", "Novembar", "Decembar"],
+    monthsShort: ["Jan", "Feb", "Mar", "Apr", "Maj", "Jun", "Jul", "Avg", "Sep", "Okt", "Nov", "Dec"],
+    today: "Danas",
+    clear: "Očisti"
+  };
+  $('#datepicker.date').datepicker({
     format: "yyyy-mm-dd",
     weekStart: 1,
-    autoclose: true
+    autoclose: true,
+    language: 'bs'
+  });
 });

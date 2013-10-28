@@ -19,19 +19,21 @@
   
   
 {% block sidebar %}
+  <!-- Article name -->
   <div class="panel panel-default">
     <div class="panel-heading">Article name</div>
     <div class="panel-body">
       <input type="text" name="title" class="form-control" id="title" value="{% if article.title is defined %}{{ article.title|e }}{% else %}Input title{% endif %}">
       <span class="help-block">Name for storing article in database.</span>
     </div>
-  </div>
+  </div><!-- end Article name -->
   
+  <!-- Publish date-->
   <div class="panel panel-default">
     <div class="panel-heading">Publish article</div>
     <div class="panel-body">
       <div class="form-group">
-        <input type="text" id="datepicker" name="date" class="date form-control">
+        <input type="text" id="datepicker" name="date" class="date form-control" value="{% if article.pubdate is defined %}{{ article.pubdate|e }}{% else %}Select date{% endif %}">
         <span class="help-block">Set date for publishing article.</span>
 
       </div>
@@ -42,7 +44,7 @@
         <input type="radio" name="publish" id="not-published" value="hide"> Hide
       </label>
     </div>
-  </div>
+  </div><!-- end Publish date-->
 {% endblock %}
   
   

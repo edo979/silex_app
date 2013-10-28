@@ -38,7 +38,7 @@ $admin->get('/articles/new', function (Silex\Application $app)
   $pageId = 'article';
 
   // Empty values for form
-  $article = array('title' => '', 'body' => '');
+  $article = array('title' => '', 'body' => '', 'publishDate' => '');
 
   return $app['twig']->render('admin/article.twig', array(
         'pageId'  => $pageId,
@@ -59,6 +59,9 @@ $admin->post('/articles/new', function (Silex\Application $app, Request $request
   {
     $data['title'] = $request->get('title');
     $data['body'] = $request->get('body');
+    $data['pubdate'] = $request->get('publishDate');
+    
+    // TODO: Validator
 
     $id = $app['model.article']->save($data);
 
@@ -95,6 +98,9 @@ $admin->post('/article/{id}', function (Silex\Application $app, Request $request
 
     $data['title'] = $request->get('title');
     $data['body'] = $request->get('body');
+    $data['pubdate'] = $request->get('publishDate');
+    
+    // TODO: Validator
 
     $result = $app['model.article']->save($data, $id);
 
