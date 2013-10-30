@@ -39,11 +39,15 @@ $admin->get('/articles/new', function (Silex\Application $app)
 
   // Empty values for form
   $article = array('title' => '', 'body' => '', 'publish' => '1', 'pubdate' => date("Y-m-d"));
+  
+  // Get last three images form database
+  $lastAddImages = $app['model.photo']->getLastAdd(3);
 
   return $app['twig']->render('admin/article.twig', array(
         'pageId'  => $pageId,
         'title'   => ucfirst($pageId),
-        'article' => $article
+        'article' => $article,
+        'images'  => $lastAddImages
   ));
 })->bind('articlesNew');
 
@@ -82,11 +86,15 @@ $admin->get('/article/{id}', function (Silex\Application $app, $id)
   $pageId = 'article';
 
   $article = $app['model.article']->get($id);
+  
+  // Get last three images form database
+  $lastAddImages = $app['model.photo']->getLastAdd(3);
 
   return $app['twig']->render('admin/article.twig', array(
         'pageId'  => $pageId,
         'title'   => ucfirst($pageId),
-        'article' => $article
+        'article' => $article,
+        'images'  => $lastAddImages
   ));
 })->bind('article');
 

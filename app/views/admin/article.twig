@@ -1,94 +1,111 @@
 {% extends 'admin/layout.twig' %}
 {% block headerScripts %}
   {{ parent() }}
-  <link href="/js/datepicker/css/datepicker.css" rel="stylesheet" media="screen">
+<link href="/js/datepicker/css/datepicker.css" rel="stylesheet" media="screen">
 {% endblock %}
 
 
 
 {% block main %}
-  <textarea class="tinymce" name="body" id="body">
+<textarea class="tinymce" name="body" id="body">
     {% if article.body is defined %}
         {{ article.body|e }}
     {% else %}Input body{% endif %}
-  </textarea>
-  
+</textarea>
+<br>
+<section class="manage-images">
+  <div class="panel panel-default">
+    <div class="panel-heading">Manage Images</div>
+    <div class="panel-body">
+      <div class="row">
+        {% for image in images %}
+        <div class="col-md-4">
+          <a class="thumbnail">
+            <img src="{{ path('image', {id: image.id}) }}" alt="">
+          </a>
+        </div>
+        {% endfor %}
+      </div><!-- end div.row -->
+    </div><!-- end div.panel-body -->
+  </div><!-- end div.panel-default -->
+</section>
+
   {% include 'admin/_modalAddPhoto.twig' %}
 {% endblock %}
 
-  
-  
+
+
 {% block sidebar %}
-  <!-- Server info -->
-  <div id="panelServerInfo" class="panel panel-info">
-    <div class="panel-heading">Server info<div class="pull-right"></div></div>
-    <div class="panel-body">
-      <p>Last modified date: <span>
+<!-- Server info -->
+<div id="panelServerInfo" class="panel panel-info">
+  <div class="panel-heading">Server info<div class="pull-right"></div></div>
+  <div class="panel-body">
+    <p>Last modified date: <span>
         {% if article.modified is defined %}
           {{ article.modified|e|date("d.m.Y. H:i:s") }}
         {% else %}
-          Article not saved
+        Article not saved
         {% endif %}
-        </span>
-      </p>
-    </div>
-  </div><!-- end Server info -->
-  
-  <!-- Article name -->
-  <div class="panel panel-default">
-    <div class="panel-heading">Article name</div>
-    <div class="panel-body">
-      <input type="text" name="title" class="form-control" id="title" value="{% if article.title is defined %}{{ article.title|e }}{% else %}Input title{% endif %}">
-      <span class="help-block">Name for storing article in database.</span>
-    </div>
-  </div><!-- end Article name -->
-  
-  <!-- Publish date-->
-  <div class="panel panel-default">
-    <div class="panel-heading">Publish article</div>
-    <div class="panel-body">
-      <div class="form-group">
-        <input type="text" id="datepicker" name="date" class="date form-control"
-          {% if article.pubdate is defined %}
-            value="{{ article.pubdate|e }}"
-          {% else %}
-            value="{{ article.pubdate|e }}"
-          {% endif %}
-         >
-        <span class="help-block">Set date for publishing article.</span>
+      </span>
+    </p>
+  </div>
+</div><!-- end Server info -->
 
-      </div>
-      <label class="radio-inline">
-        <input type="radio" name="publish" value="publish"
-          {% if article.publish == '1' %}
-            checked="checked"
+<!-- Article name -->
+<div class="panel panel-default">
+  <div class="panel-heading">Article name</div>
+  <div class="panel-body">
+    <input type="text" name="title" class="form-control" id="title" value="{% if article.title is defined %}{{ article.title|e }}{% else %}Input title{% endif %}">
+    <span class="help-block">Name for storing article in database.</span>
+  </div>
+</div><!-- end Article name -->
+
+<!-- Publish date-->
+<div class="panel panel-default">
+  <div class="panel-heading">Publish article</div>
+  <div class="panel-body">
+    <div class="form-group">
+      <input type="text" id="datepicker" name="date" class="date form-control"
+          {% if article.pubdate is defined %}
+             value="{{ article.pubdate|e }}"
+          {% else %}
+             value="{{ article.pubdate|e }}"
           {% endif %}
-         > Publish
-      </label>
-      <label class="radio-inline">
-        <input type="radio" name="publish" value="hide"
-          {% if article.publish == '0' %}
-            checked="checked"
-          {% endif %}
-         > Hide
-      </label>
-      <button id="savePublishedArticle" type="submit" class="btn btn-primary btn-sm pull-right">
-        <span class="glyphicon glyphicon-floppy-disk"></span>
-         Save
-      </button>
+             >
+      <span class="help-block">Set date for publishing article.</span>
+
     </div>
-  </div><!-- end Publish date-->
+    <label class="radio-inline">
+      <input type="radio" name="publish" value="publish"
+          {% if article.publish == '1' %}
+             checked="checked"
+          {% endif %}
+             > Publish
+    </label>
+    <label class="radio-inline">
+      <input type="radio" name="publish" value="hide"
+          {% if article.publish == '0' %}
+             checked="checked"
+          {% endif %}
+             > Hide
+    </label>
+    <button id="savePublishedArticle" type="submit" class="btn btn-primary btn-sm pull-right">
+      <span class="glyphicon glyphicon-floppy-disk"></span>
+      Save
+    </button>
+  </div>
+</div><!-- end Publish date-->
 {% endblock %}
-  
-  
-  
+
+
+
 {%block javascript%}
   {{ parent() }}
-  <!-- Plupload script for menage images upload -->
-  <script src="/js/plupload/plupload.full.min.js"></script>
-  <!-- Datepicker script -->
-  <script src="/js/datepicker/js/bootstrap-datepicker.js"></script>
-  <!-- MY script -->
-  <script src="/js/pagescript.js"></script>
-  <script src="/js/admin_pagescript.js"></script>
+<!-- Plupload script for menage images upload -->
+<script src="/js/plupload/plupload.full.min.js"></script>
+<!-- Datepicker script -->
+<script src="/js/datepicker/js/bootstrap-datepicker.js"></script>
+<!-- MY script -->
+<script src="/js/pagescript.js"></script>
+<script src="/js/admin_pagescript.js"></script>
 {% endblock %}

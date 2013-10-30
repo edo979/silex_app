@@ -48,7 +48,6 @@ $(function() {
   });
   $('#uploadfiles').click(function(e) {
     uploader.start();
-    console.log('uploading');
     e.preventDefault();
   });
   uploader.init();
@@ -102,8 +101,8 @@ $(function() {
   });
 
   $(document).bind("DOMNodeRemoved", function(e) {
-    var images=[];
-    if (e.target.innerHTML == 'img'){
+    var images = [];
+    if (e.target.innerHTML == 'img') {
       $('#body_ifr').contents().find('img').each(function() {
         images.push($(this).attr('src'));
       });
@@ -119,9 +118,10 @@ var ESarticle = {
     // show image in editor
     tinymce.EditorManager
       .activeEditor
-      .insertContent("<img width='200px' src='//webdev.dev/images/" + id + "'>");
+      .insertContent("<img width='200px' src='//webdev.dev/image/" + id + "'>");
     // save article
     this.saveArticle();
+    this.showNewImage(id);
   },
   saveArticle: function() {
     var self = this,
@@ -212,6 +212,16 @@ var ESarticle = {
       $('#panelServerInfo').removeClass()
         .addClass('panel panel-danger');
     }
+  },
+  showNewImage: function(id) {
+    var section = $('section.manage-images');
+    // remove last
+    section.find('div.row div:last').remove();
+    // Clone and manipulate id of image
+    section.find('.row > div:first')
+      .clone().find('img').attr('src', '/image/' + id)
+      .end()
+      .prependTo(section.find('div.row'));
   }
 };
 

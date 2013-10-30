@@ -10,4 +10,14 @@ class Photo extends BaseModel
    */
   protected $_tableName = 'photos';
 
+  public function getLastAdd($limit = 3)
+  {
+    $sql = "SELECT id FROM {$this->_tableName} ORDER BY id DESC LIMIT {$limit}";
+    $statement = $this->conn->prepare($sql);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    
+    return $result;
+  }
+
 }

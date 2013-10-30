@@ -6,7 +6,7 @@ $image = $app['controllers_factory'];
 
 // New image in admin controler
 // Get Photo
-$app->get('/images/{id}', function (Silex\Application $app, $id)
+$app->get('/image/{id}', function (Silex\Application $app, $id)
 {
   $image = $app['model.photo']->get($id);
 
@@ -21,6 +21,6 @@ $app->get('/images/{id}', function (Silex\Application $app, $id)
         'Pragma'       => 'public'
       )
   );
-});
+})->bind('image');
 
 return $image;
