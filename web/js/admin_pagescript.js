@@ -7,7 +7,7 @@ $(function() {
     selector: "textarea",
     language: "bs",
     menu: 'false',
-    content_css : '/css/bootstrap.min.css',
+    content_css: '/css/bootstrap.min.css',
     plugins: "wordcount save",
     toolbar: " save | undo redo | styleselect | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent |  removeformat image",
     save_enablewhendirty: true,
@@ -100,8 +100,17 @@ $(function() {
   $('#savePublishedArticle').on('click', function() {
     ESarticle.saveArticle();
   });
-});
 
+  $(document).bind("DOMNodeRemoved", function(e) {
+    var images=[];
+    if (e.target.innerHTML == 'img'){
+      $('#body_ifr').contents().find('img').each(function() {
+        images.push($(this).attr('src'));
+      });
+      console.log(images);
+    }
+  });
+});
 // Object for menage ajax call
 var ESarticle = {
   // id of article returned from server
