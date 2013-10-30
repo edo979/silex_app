@@ -36,7 +36,7 @@ $(function() {
     container: 'container',
     multi_selection: false,
     max_file_size: '3mb',
-    url: '//webdev.dev/admin/photos/new',
+    url: '//webdev.dev/admin/images/new',
     filters: [
       {title: "Image files", extensions: "jpg,gif,png"},
       {title: "Zip files", extensions: "zip"}
@@ -110,7 +110,7 @@ var ESarticle = {
     // show image in editor
     tinymce.EditorManager
       .activeEditor
-      .insertContent("<img width='200px' src='//webdev.dev/photos/" + id + "'>");
+      .insertContent("<img width='200px' src='//webdev.dev/images/" + id + "'>");
     // save article
     this.saveArticle();
   },

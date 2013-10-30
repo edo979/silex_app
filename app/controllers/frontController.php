@@ -45,23 +45,11 @@ $app->get('/login', function(Request $request) use ($app)
   ));
 })->bind('login');
 
-// Get Photo
-$app->get('/photos/{id}', function (Silex\Application $app, $id)
-{
-  $image = $app['model.photo']->get($id);
-
-  // create response
-  $path = '../app/uploads/' . $image['filename'];
-  if (!file_exists($path))
-  {
-    $app->abort(404);
-  }
-  return $app->sendFile($path, 200, array(
-        'Content-Type' => 'image/png, image/jpg, image/gif',
-        'Pragma'       => 'public'
-      )
-  );
-});
-
+// Mounting Controllers
+// Admin Area
 $app->mount('/admin', include 'admin/controller.php');
+$app->mount('/admin/images', include 'admin/imageController.php');
+
+// Public Controllers
 $app->mount('/blog', include 'blogController.php');
+$app->mount('/image', include 'imageController.php');

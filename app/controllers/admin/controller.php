@@ -139,47 +139,4 @@ $admin->get('/article/delete/{id}', function (Silex\Application $app, $id)
   }
 });
 
-
-
-// Photos
-// New Photo
-$admin->post('/photos/new', function (Silex\Application $app)
-{
-  if (!empty($_FILES["file"]))
-  {
-    $app->register(new ESProviders\LittlePhotoServiceProvider(), array(
-        'photoHandler.temp_file' => $_FILES["file"],
-        'photoHandler.errors'    => array(),
-        'photoHandler.imageId'   => 0
-    ));
-    if ($app['photoHandler'])
-    {
-      $id = $app['photoHandler.imageId'];
-      return $app->json(array('imageId' => $id), 200);
-    }
-  }
-  else
-  {
-    return $app->json(array('error' => 'error'), 400);
-  }
-});
-
-// Get Photo
-$admin->get('/photos/{id}', function (Silex\Application $app, $id)
-{
-  $image = $app['model.photo']->get($id);
-
-  // create response
-  $path = '../app/uploads/' . $image['filename'];
-  if (!file_exists($path))
-  {
-    $app->abort(404);
-  }
-  return $app->sendFile($path, 200, array(
-        'Content-Type' => 'image/png, image/jpg, image/gif',
-        'Pragma'       => 'public'
-      )
-  );
-});
-
 return $admin;
