@@ -54,7 +54,6 @@ $(function() {
   uploader.bind('FilesAdded', function(up, files) {
     $.each(files, function(i, file) {
       if (uploader.files.length != 1) {
-        console.log(files);
         up.splice(0, 1);
       }
       $('#filelist').empty();
@@ -113,8 +112,13 @@ $(function() {
 
 // My triggers
 $(function() {
+  // insert image
   $('button span.glyphicon-arrow-up').parent().on('click', function() {
     ESarticle.insertImageFromPanel($(this));
+  });
+  // delete image
+  $('button span.glyphicon-trash').parent().on('click', function() {
+    ESarticle.deleteImageFromDb($(this));
   });
 });
 
@@ -233,16 +237,34 @@ var ESarticle = {
       .end()
       .prependTo(section.find('div.row'));
   },
-  insertImageFromPanel: function(button) {
+  getImageId: function(button) {
     // grab image src
     var imageSrc = button.parents('div#manage-image-icon').find('img').attr('src'),
       id;
     // get id
     id = imageSrc.substring(imageSrc.lastIndexOf('/') + 1);
+    return id;
+  },
+  insertImageFromPanel: function(button) {
+    var id = this.getImageId(button);
     // insert image into editor
     tinymce.EditorManager
       .activeEditor
       .insertContent("<img width='200px' src='//webdev.dev/image/" + id + "'>");
+  },
+  deleteImageFromDb: function(button) {
+    var id = this.getImageId(button),
+      deleteImage;
+    // pop up modal;
+    deleteImage = this.deleteModalDialog(id);
+    // delete image;
+    if(deleteImage) {
+      console.log('delete image from database');
+    }
+  },
+  deleteModalDialog: function(id) {
+    // pop up modal
+    $('#deleteDbImage').modal();
   }
 };
 
