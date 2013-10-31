@@ -216,7 +216,9 @@ var ESarticle = {
   showNewImage: function(id) {
     var section = $('section.manage-images');
     // remove last
-    section.find('div.row div:last').remove();
+    if(section.find('div.row div').length > 2){
+      section.find('div.row div:last').remove();
+    }
     // Clone and manipulate id of image
     section.find('.row > div:first')
       .clone().find('img').attr('src', '/image/' + id)
