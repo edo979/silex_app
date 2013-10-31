@@ -110,6 +110,14 @@ $(function() {
     }
   });
 });
+
+// My triggers
+$(function() {
+  $('button span.glyphicon-arrow-up').parent().on('click', function() {
+    ESarticle.insertImageFromPanel($(this));
+  });
+});
+
 // Object for menage ajax call
 var ESarticle = {
   // id of article returned from server
@@ -216,7 +224,7 @@ var ESarticle = {
   showNewImage: function(id) {
     var section = $('section.manage-images');
     // remove last
-    if(section.find('div.row div').length > 2){
+    if (section.find('div.row div').length > 2) {
       section.find('div.row div:last').remove();
     }
     // Clone and manipulate id of image
@@ -224,6 +232,17 @@ var ESarticle = {
       .clone().find('img').attr('src', '/image/' + id)
       .end()
       .prependTo(section.find('div.row'));
+  },
+  insertImageFromPanel: function(button) {
+    // grab image src
+    var imageSrc = button.parents('div#manage-image-icon').find('img').attr('src'),
+      id;
+    // get id
+    id = imageSrc.substring(imageSrc.lastIndexOf('/') + 1);
+    // insert image into editor
+    tinymce.EditorManager
+      .activeEditor
+      .insertContent("<img width='200px' src='//webdev.dev/image/" + id + "'>");
   }
 };
 

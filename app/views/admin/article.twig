@@ -19,25 +19,26 @@
 <!-- Menage Image -->
 <section class="manage-images">
   <div class="panel panel-default">
-    <div class="panel-heading">
-      Manage Images
-
-    </div>
+    <div class="panel-heading">Manage Images</div>
     <div class="panel-body">
       <div class="row">
         {% for image in images %}
-        <div class="col-md-4">
+        
+        <div id="manage-image-icon" class="col-md-4">
+          <!-- Menage Image icon-->
           <div style="position: absolute;right: 20px;top: 5px;">
             <div class="btn-group btn-group-xs">
-              <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-arrow-up" data-toggle="tooltip" title="Upload image"></span></button>     
-              <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-trash" data-toggle="tooltip" title="Delete image"></span></button>
+              <button type="button" class="btn btn-default" data-toggle="tooltip" title="Upload image"><span class="glyphicon glyphicon-arrow-up" ></span></button>     
+              <button type="button" class="btn btn-default" data-toggle="tooltip" title="Delete image"><span class="glyphicon glyphicon-trash" ></span></button>
             </div>
-          </div>
+          </div><!-- end Menage Image icon-->
+          
+          <!-- image thumbnail-->
           <a class="thumbnail">
             <img src="{{ path('image', {id: image.id}) }}" alt="">
           </a>
-
         </div>
+        
         {% endfor %}
       </div><!-- end div.row -->
     </div><!-- end div.panel-body -->
